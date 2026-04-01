@@ -1,6 +1,7 @@
 let writingArea = document.getElementById('poem-form');
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
+
 let storePoems = () => {
 	// https://developer.mozilla.org/en-US/docs/Web/API/FormData
 	let savePoem = new FormData(writingArea)
@@ -11,7 +12,17 @@ let storePoems = () => {
 	})
 }
 
+let writePoem = () => {
+	let poemText = document.getElementById('poem-text').value
+
+	let poemID = localStorage.length + 1
+
+	localStorage.setItem(poemID, poemText)
+}
+
 writingArea.addEventListener('submit', (event) => {
 	// https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
 	event.preventDefault()
+
+	writePoem()
 })
