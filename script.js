@@ -20,7 +20,7 @@ let retrievePoems = () => {
 	return poems
 }
 
-let displayPoems = (poems) => {
+let displayPoems = () => {
 	// running retrievePoems here so we have the retrieved poems from localStorage
 	poems = retrievePoems()
 	// checking
