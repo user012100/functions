@@ -54,5 +54,30 @@ writingArea.addEventListener('submit', (event) => {
 	writePoem()
 })
 
+// adding another function using this api i found to retrieve a random poem (might use this for something later): https://github.com/thundercomb/poetrydb/blob/master/README.md
+// fetch is asynchronous so i have to use async/await here to prevent an error: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+let getRandomPoem = async () => {
+	// using fetch method here with async/await: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+	let response = await fetch('https://poetrydb.org/random')
+	let randomPoem = await response.json()
+	// checking
+	console.log(randomPoem)
+	// passing the poem to displayRandomPoem function
+	return randomPoem
+}
+
+// function to display random poem on the page (will use this for something later)
+let displayRandomPoem = async () => {
+	// using await here so there's no error again when running getRandomPoem and passsing poem
+	let randomPoem = await getRandomPoem()
+	let randomPoemElement = document.createElement('section')
+	let selectedRandomPoem = randomPoem[0]
+	// checking the json object
+	console.log(selectedRandomPoem)
+	randomPoemElement.innerHTML = `<h2>${selectedRandomPoem.title}</h2><p>${selectedRandomPoem.lines}</p>`
+	document.body.appendChild(randomPoemElement)
+}
+
 // display poems once the page loads
 displayPoems()
+displayRandomPoem()
