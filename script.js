@@ -9,12 +9,23 @@ let retrievePoems = () => {
 	Object.keys(localStorage).forEach((key) => {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
 		poems.push({
-			id: key,
+			title: key,
 			text: localStorage.getItem(key)
 		})
 	})
+	return poems
+}
 
+let displayPoems = (poems) => {
+	// running retrievePoems here so we have retrieved poems from localStorage
+	poems = retrievePoems()
 	console.log(poems)
+	// creating elements for each poem
+	poems.forEach((poem) => {
+		let poemElement = document.createElement('section')
+		poemElement.innerHTML = `<h2>${poem.title}</h2><p>${poem.text}</p>`
+		document.body.appendChild(poemElement)
+	})
 }
 
 let writePoem = () => {
@@ -28,9 +39,10 @@ let writePoem = () => {
 
 writingArea.addEventListener('submit', (event) => {
 	// https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
-	event.preventDefault()
+	// I actually want it to refresh the page
+	// event.preventDefault()
 	
 	writePoem()
 })
 
-retrievePoems()
+displayPoems()
