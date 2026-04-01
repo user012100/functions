@@ -3,24 +3,32 @@ let writingArea = document.getElementById('poem-form');
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
 let retrievePoems = () => {
+	// making an array with objects in it from localStorage
 	let poems = []
 
 	// using Object.keys() here instead of cycling through localStorage with a simple for loop (just thought this was a better way of doing it): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 	Object.keys(localStorage).forEach((key) => {
-		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
+		// pushing object to array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
 		poems.push({
 			title: key,
 			text: localStorage.getItem(key)
 		})
 	})
+	// checking
+	console.log(poems)
+	// returning it so we can use it in displayPoems
 	return poems
 }
 
 let displayPoems = (poems) => {
-	// running retrievePoems here so we have retrieved poems from localStorage
+	// running retrievePoems here so we have the retrieved poems from localStorage
 	poems = retrievePoems()
+	// checking
 	console.log(poems)
-	// creating elements for each poem
+	// the sort doesnt seem to actually sort it (?)
+	poems.sort()
+	console.log(poems)
+	// creating an element for each poem
 	poems.forEach((poem) => {
 		let poemElement = document.createElement('section')
 		poemElement.innerHTML = `<h2>${poem.title}</h2><p>${poem.text}</p>`
@@ -42,7 +50,9 @@ writingArea.addEventListener('submit', (event) => {
 	// I actually want it to refresh the page
 	// event.preventDefault()
 	
+	// writing poem to localStorage on button submission
 	writePoem()
 })
 
+// display poems once the page loads
 displayPoems()
