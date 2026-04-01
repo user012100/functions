@@ -70,10 +70,11 @@ let getRandomPoem = async () => {
 let displayRandomPoem = async () => {
 	// using await here so there's no error again when running getRandomPoem and passsing poem
 	let randomPoem = await getRandomPoem()
-	let randomPoemElement = document.createElement('section')
 	let selectedRandomPoem = randomPoem[0]
 	// checking the json object
 	console.log(selectedRandomPoem)
+	// creating element
+	let randomPoemElement = document.createElement('section')
 	randomPoemElement.innerHTML = `<h2>${selectedRandomPoem.title}</h2><p>${selectedRandomPoem.lines}</p>`
 	document.body.appendChild(randomPoemElement)
 }
