@@ -15,6 +15,7 @@ let retrievePoems = () => {
 		let poemInfo = JSON.parse(localStorage.getItem(key))
 
 		poems.push({
+			id: key,
 			title: poemInfo.title,
 			text: poemInfo.text
 		})
@@ -30,8 +31,10 @@ let displayPoems = () => {
 	// running retrievePoems here so we have the retrieved poems from localStorage
 	poems = retrievePoems()
 	// checking
-	// console.log(poems
-	poems.sort()
+	// console.log(poems)
+	// sorting poems by id in descending order so the most recent poem is at the top
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+	poems.sort((a, b) => b.id - a.id);
 	
 	// creating an element for each poem
 	poems.forEach((poem) => {
