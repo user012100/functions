@@ -30,14 +30,22 @@ let displayPoems = () => {
 	// running retrievePoems here so we have the retrieved poems from localStorage
 	poems = retrievePoems()
 	// checking
-	console.log(poems)
-	// the sort doesnt seem to actually sort it (?)
+	// console.log(poems
 	poems.sort()
-	console.log(poems)
+	
 	// creating an element for each poem
 	poems.forEach((poem) => {
 		let poemElement = document.createElement('section')
-		poemElement.innerHTML = `<h2>${poem.title}</h2><p>${poem.text}</p>`
+		poemElement.innerHTML = `<h2>${poem.title}</h2>`
+		// console.log(poem.text)
+		// making a loop to parse thru each line to display on a new line
+		let lines = poem.text
+
+		lines.forEach((line) => {
+			let lineElement = document.createElement('p')
+			lineElement.textContent = line
+			poemElement.appendChild(lineElement)
+		})
 		document.body.appendChild(poemElement)
 	})
 }
@@ -50,7 +58,8 @@ let writePoem = () => {
 	let poemText = document.getElementById('poem-text').value
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
 	// using the split function to split by line breaks (similar to how poems are stored in the random poem api i used)
-	let poemLines = poemText.split('\n')
+	let poemLines = []
+	poemLines = poemText.split('\n')
 
 	let poemInfo = {
 		title: poemTitle,
