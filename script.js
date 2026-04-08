@@ -11,6 +11,7 @@ let retrievePoems = () => {
 		// pushing object to array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
 
 		// parsing through localStorage object
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse 
 		let poemInfo = JSON.parse(localStorage.getItem(key))
 
 		poems.push({
@@ -18,6 +19,7 @@ let retrievePoems = () => {
 			text: poemInfo.text
 		})
 	})
+
 	// checking
 	console.log(poems)
 	// returning it so we can use it in displayPoems
@@ -41,14 +43,18 @@ let displayPoems = () => {
 }
 
 let writePoem = () => {
+	// using numerical ids for poem key in localStorage
 	let poemID = localStorage.length + 1
 
 	let poemTitle = document.getElementById('poem-title').value
 	let poemText = document.getElementById('poem-text').value
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
+	// using the split function to split by line breaks (similar to how poems are stored in the random poem api i used)
+	let poemLines = poemText.split('\n')
 
 	let poemInfo = {
 		title: poemTitle,
-		text: poemText
+		text: poemLines
 	}
 
 	// https://developer.mozilla.orgq/en-US/docs/Web/API/Window/localStorage
