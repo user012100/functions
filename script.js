@@ -79,8 +79,11 @@ let displayPoems = () => {
 		deleteButton.textContent = 'Delete'
 		deleteButton.addEventListener('click', (event) => {
 			localStorage.removeItem(poem.id)
+			// 'refresh' the poems displayed
 			displayPoems()
 		})
+
+		poemElement.appendChild(deleteButton);
 
 		document.body.appendChild(poemElement)
 	})
