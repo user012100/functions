@@ -1,4 +1,4 @@
-let writingArea = document.getElementById('poem-form');
+let writingArea = document.getElementById('poem-form')
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
@@ -45,7 +45,7 @@ let displayPoems = () => {
 	// console.log(poems)
 	// sorting poems by id in descending order so the most recent poem is at the top
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-	poems.sort((a, b) => b.id - a.id);
+	poems.sort((a, b) => b.id - a.id)
 	
 	// creating an element for each poem
 	poems.forEach((poem) => {
@@ -63,14 +63,14 @@ let displayPoems = () => {
 			// event listener when the user clicks out of the input (after editing)
 			// https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event
 			lineElement.addEventListener('blur', (event) => {
-				lines[id] = lineElement.value;
+				lines[id] = lineElement.value
 				// writing the updated poem back to localStorage
 				localStorage.setItem(poem.id, JSON.stringify({
 					id: poem.id,
 					title: poem.title,
 					text: lines
-				}));
-			});
+				}))
+			})
 			// adding lines to poem element
 			poemElement.appendChild(lineElement)
 		})
@@ -84,7 +84,7 @@ let displayPoems = () => {
 			displayPoems()
 		})
 
-		poemElement.appendChild(deleteButton);
+		poemElement.appendChild(deleteButton)
 
 		// adding print button
 		let printButton = document.createElement('button')
@@ -113,7 +113,7 @@ let displayPoems = () => {
 					await navigator.share({
 						title: poem.title,
 						text: poem.text
-					});
+					})
 				} finally {
 					sharing = false
 				}
