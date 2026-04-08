@@ -9,9 +9,13 @@ let retrievePoems = () => {
 	// using Object.keys() here instead of cycling through localStorage with a simple for loop (just thought this was a better way of doing it): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 	Object.keys(localStorage).forEach((key) => {
 		// pushing object to array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
+
+		// parsing through localStorage object
+		let poemInfo = JSON.parse(localStorage.getItem(key))
+
 		poems.push({
-			title: key,
-			text: localStorage.getItem(key)
+			title: poemInfo.title,
+			text: poemInfo.text
 		})
 	})
 	// checking
