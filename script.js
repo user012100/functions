@@ -28,7 +28,14 @@ let retrievePoems = () => {
 }
 
 let displayPoems = () => {
-	// running retrievePoems here so we have the retrieved poems from localStorage
+	// clearing poems so we dont have to refresh the page
+	let poemSections = document.querySelectorAll('section')
+	
+	poemSections.forEach(section => {
+		section.remove()
+	})
+
+	// running retrievePoems here so we have the new retrieved poems from localStorage
 	poems = retrievePoems()
 	// checking
 	// console.log(poems)
@@ -77,11 +84,11 @@ let writePoem = () => {
 
 writingArea.addEventListener('submit', (event) => {
 	// https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
-	// I actually want it to refresh the page
-	// event.preventDefault()
+	event.preventDefault()
 	
 	// writing poem to localStorage on button submission
 	writePoem()
+	displayPoems()
 })
 
 // adding another function using this api i found to retrieve a random poem (might use this for something later): https://github.com/thundercomb/poetrydb/blob/master/README.md
