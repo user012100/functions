@@ -75,6 +75,7 @@ let displayPoems = () => {
 			poemElement.appendChild(lineElement)
 		})
 
+		// adding delete button
 		let deleteButton = document.createElement('button')
 		deleteButton.textContent = 'Delete'
 		deleteButton.addEventListener('click', (event) => {
@@ -84,6 +85,40 @@ let displayPoems = () => {
 		})
 
 		poemElement.appendChild(deleteButton);
+
+		// adding print button
+		let printButton = document.createElement('button')
+		printButton.textContent = 'Print'
+		printButton.addEventListener('click', (event) => {
+			window.print()
+		})
+
+		poemElement.appendChild(printButton)
+
+		// share button w/ web share api
+		let shareButton = document.createElement('button')
+		shareButton.textContent = 'Share'
+
+		// this function needs to be asyncronous to work like in my last project
+		let sharing = false
+
+		poemElement.appendChild(shareButton)
+
+		// using example from my last project:
+		shareButton.addEventListener('click', async (event) => {
+			if (navigator.share) {
+				if (sharing) return
+				sharing = true
+				try {
+					await navigator.share({
+						title: poem.title,
+						text: poem.text
+					});
+				} finally {
+					sharing = false
+				}
+			}
+		})
 
 		document.body.appendChild(poemElement)
 	})
