@@ -29,11 +29,15 @@ let retrievePoems = () => {
 
 let displayPoems = () => {
 	// clearing poems so we dont have to refresh the page
-	let poemSections = document.querySelectorAll('section')
-	
+	let poemSections = document.querySelectorAll('.poem')
+
 	poemSections.forEach(section => {
 		section.remove()
 	})
+
+	// clearing input fields 
+	document.getElementById('poem-title').value = ''
+    document.getElementById('poem-text').value = ''
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
 	poems = retrievePoems()
@@ -46,6 +50,7 @@ let displayPoems = () => {
 	// creating an element for each poem
 	poems.forEach((poem) => {
 		let poemElement = document.createElement('section')
+		poemElement.classList.add('poem')
 		poemElement.innerHTML = `<h2>${poem.title}</h2>`
 		// console.log(poem.text)
 		// making a loop to parse thru each line to display on a new line
@@ -118,4 +123,4 @@ let displayRandomPoem = async () => {
 
 // display poems once the page loads
 displayPoems()
-displayRandomPoem()
+// displayRandomPoem()
