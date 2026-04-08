@@ -37,12 +37,20 @@ let displayPoems = () => {
 }
 
 let writePoem = () => {
-	let poemText = document.getElementById('poem-text').value
+	let poemID = localStorage.length + 1
 
 	let poemTitle = document.getElementById('poem-title').value
+	let poemText = document.getElementById('poem-text').value
+
+	let poemInfo = {
+		title: poemTitle,
+		text: poemText
+	}
 
 	// https://developer.mozilla.orgq/en-US/docs/Web/API/Window/localStorage
-	localStorage.setItem(poemTitle, poemText)
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+	// just inserting the poemInfo object into localStorage returns [object Object] so I have to stringify it and parse it when I retrieve it
+	localStorage.setItem(poemID, JSON.stringify(poemInfo))
 }
 
 writingArea.addEventListener('submit', (event) => {
