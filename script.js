@@ -56,11 +56,32 @@ let displayPoems = () => {
 		// making a loop to parse thru each line to display on a new line
 		let lines = poem.text
 
-		lines.forEach((line) => {
-			let lineElement = document.createElement('p')
-			lineElement.textContent = line
+		lines.forEach((line, id) => {
+			let lineElement = document.createElement('input')
+			lineElement.value = line
+
+			// event listener when the user clicks out of the input (after editing)
+			// https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event
+			lineElement.addEventListener('blur', (event) => {
+				lines[id] = lineElement.value;
+				// writing the updated poem back to localStorage
+				localStorage.setItem(poem.id, JSON.stringify({
+					id: poem.id,
+					title: poem.title,
+					text: lines
+				}));
+			});
+			// adding lines to poem element
 			poemElement.appendChild(lineElement)
 		})
+
+		let deleteButton = document.createElement('button')
+		deleteButton.textContent = 'Delete'
+		deleteButton.addEventListener('click', (event) => {
+			localStorage.removeItem(poem.id)
+			displayPoems()
+		})
+
 		document.body.appendChild(poemElement)
 	})
 }
