@@ -1,4 +1,15 @@
-.poem input {
-  display: block;
-  border: none;
+:root {
+  --header-color: #2a3d66;
+  --text-color: #333333;
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+h1 {
+  color: var(--header-color);
+}
+
+body {
+  color: var(--text-color);
+  font-family: var(--font);
+}
+
