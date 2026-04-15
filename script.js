@@ -1,4 +1,9 @@
 let writingArea = document.getElementById('poem-form')
+let newPoemButton = document.getElementById('new-poem')
+
+newPoemButton.addEventListener('click', () => {
+	writingArea.classList.remove('hidden')
+})
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
@@ -16,7 +21,8 @@ let retrievePoems = () => {
 
 		poems.push({
 			id: key,
-			title: poemInfo.title,
+			// removing titles for now
+			// title: poemInfo.title,
 			text: poemInfo.text
 		})
 	})
@@ -36,7 +42,7 @@ let displayPoems = () => {
 	})
 
 	// clearing input fields 
-	document.getElementById('poem-title').value = ''
+	// document.getElementById('poem-title').value = ''
     document.getElementById('poem-text').value = ''
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
@@ -51,7 +57,6 @@ let displayPoems = () => {
 	poems.forEach((poem) => {
 		let poemElement = document.createElement('section')
 		poemElement.classList.add('poem')
-		poemElement.innerHTML = `<h2>${poem.title}</h2>`
 		// console.log(poem.text)
 		// making a loop to parse thru each line to display on a new line
 		let lines = poem.text
@@ -67,7 +72,7 @@ let displayPoems = () => {
 				// writing the updated poem back to localStorage
 				localStorage.setItem(poem.id, JSON.stringify({
 					id: poem.id,
-					title: poem.title,
+					// title: poem.title,
 					text: lines
 				}))
 			})
@@ -111,7 +116,7 @@ let displayPoems = () => {
 				sharing = true
 				try {
 					await navigator.share({
-						title: poem.title,
+						// title: poem.title,
 						text: poem.text
 					})
 				} finally {
@@ -128,7 +133,7 @@ let writePoem = () => {
 	// using numerical ids for poem key in localStorage
 	let poemID = localStorage.length + 1
 
-	let poemTitle = document.getElementById('poem-title').value
+	// let poemTitle = document.getElementById('poem-title').value
 	let poemText = document.getElementById('poem-text').value
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
 	// using the split function to split by line breaks (similar to how poems are stored in the random poem api i used)
@@ -136,7 +141,7 @@ let writePoem = () => {
 	poemLines = poemText.split('\n')
 
 	let poemInfo = {
-		title: poemTitle,
+		// title: poemTitle,
 		text: poemLines
 	}
 
