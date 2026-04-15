@@ -1,45 +1,48 @@
 /* variables */
 :root {
-  --header-color: #2a3d66;
-  --text-color: #333333;
-  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --padding: 1.5rem;
+	--header-color: #2a3d66;
+	--text-color: #333333;
+	--highlight-color: red;
+	--font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--padding: 1.5rem;
+	--button-size: 1.75rem;
 }
 
 /* header */
 h1 {
-  color: var(--header-color);
-  font-family: var(--font);
+	color: var(--header-color);
+	font-family: var(--font);
 }
 
 /* main text */
 body {
-  color: var(--text-color);
-  font-family: var(--font);
+	color: var(--text-color);
+	font-family: var(--font);
 }
 
 /* hidden class */
 .hidden {
-  display: none;
+	display: none;
 }
 
 /* new poem button */
 #poem-form {
-  position: fixed;
-  bottom: 0;
-  display: flex;
-  width: 100%;
-  height: auto;
-  align-items: last baseline;
-  padding-inline: var(--padding);
+	position: fixed;
+	bottom: 0;
+	display: flex;
+	width: 100%;
+	align-items: last baseline;
+	padding-inline: var(--padding);
 }
 
 #poem-text {
-  flex: 1 1 auto;
-  overflow: hidden;
+	flex: 1 1 auto;
+	overflow: hidden;
+	height: auto;
 }
 
 #submit {
-  flex: 0 0 auto;
-  font-size: 1.75rem;
+	flex: 0 0 auto;
+	font-size: var(--button-size);
+	color: var(--highlight-color);
 }

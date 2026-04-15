@@ -1,4 +1,12 @@
 let writingArea = document.getElementById('poem-form')
+let poemText = document.getElementById('poem-text')
+
+// from stackoverflow: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+// using scrollHeight in event listener to get the height of the text content and setting it as the height of the textarea
+poemText.addEventListener('input', () => {
+	poemText.style.height = 'auto'
+	poemText.style.height = poemText.scrollHeight
+})
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
