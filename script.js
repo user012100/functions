@@ -142,7 +142,10 @@ let displayPoems = () => {
 
 let writePoem = () => {
 	// using numerical ids for poem key in localStorage
-	let poemID = localStorage.length + 1
+	// let poemID = localStorage.length + 1
+	// using a timestamp-based key instead so new poems never reuse the same localStorage key
+	// console.log(Date.now())
+	let poemID = Date.now()
 
 	// let poemTitle = document.getElementById('poem-title').value
 	let poemText = document.getElementById('poem-text').value
