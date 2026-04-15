@@ -1,11 +1,19 @@
 let writingArea = document.getElementById('poem-form')
 let poemText = document.getElementById('poem-text')
+let submitButton = document.getElementById('submit')
 
-// from stackoverflow: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+// from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
 // using scrollHeight in event listener to get the height of the text content and setting it as the height of the textarea
 poemText.addEventListener('input', () => {
 	poemText.style.height = 'auto'
 	poemText.style.height = poemText.scrollHeight
+
+	// checking if the textarea has any text to change color of button
+	if (poemText.value !== '') {
+		submitButton.classList.add('allow')
+	} else {
+		submitButton.classList.remove('allow')
+	}
 })
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
@@ -157,6 +165,14 @@ let writePoem = () => {
 writingArea.addEventListener('submit', (event) => {
 	// https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
 	event.preventDefault()
+
+	// checking for value in textarea before writing
+	if (poemText.value == '') {
+		// console.log('no text entered')
+		return
+	} else {
+		submitButton.classList.remove('allow')
+	}
 	
 	// writing poem to localStorage on button submission
 	writePoem()

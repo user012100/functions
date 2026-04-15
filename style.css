@@ -5,7 +5,9 @@
 	--highlight-color: red;
 	--font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	--padding: 1.5rem;
-	--button-size: 1.75rem;
+	--text-size: 1.15rem;
+	--button-size: 2rem;
+	--line-height: 1.5;
 }
 
 /* header */
@@ -18,6 +20,9 @@ h1 {
 body {
 	color: var(--text-color);
 	font-family: var(--font);
+	font-size: var(--text-size);
+	line-height: var(--line-height);
+	font-weight: 500;
 }
 
 /* hidden class */
@@ -35,14 +40,25 @@ body {
 	padding-inline: var(--padding);
 }
 
+/* input in textarea */
 #poem-text {
 	flex: 1 1 auto;
 	overflow: hidden;
 	height: auto;
 }
 
+/* + button */
 #submit {
 	flex: 0 0 auto;
 	font-size: var(--button-size);
+}
+
+/* allow submission class */
+.allow {
 	color: var(--highlight-color);
+}
+
+/* poem sections */
+.poem {
+	padding: var(--padding);
 }
