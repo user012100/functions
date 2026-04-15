@@ -41,6 +41,13 @@ body {
 	padding-inline: var(--padding);
 }
 
+/* displayed poems */
+.poem input {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
 /* input in textarea */
 #poem-text {
 	flex: 1 1 auto;
@@ -68,15 +75,15 @@ body {
 }
 
 section.random-poem {
-  background: linear-gradient(
-    to bottom,
-    var(--text-color) 25%,
-    var(--background-color) 100%
-  );
-  /* https://css-tricks.com/snippets/css/gradient-text/ */
-  /* using this to change the gradient of the random poem without having to do it in js */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+	background: linear-gradient(
+		to bottom,
+		var(--text-color) 25%,
+		var(--background-color) 100%
+	);
+	/* https://css-tricks.com/snippets/css/gradient-text/ */
+	/* using this to change the gradient of the random poem without having to do it in js */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
 }

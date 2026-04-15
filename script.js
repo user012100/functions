@@ -95,7 +95,7 @@ let displayPoems = () => {
 
 		// adding delete button
 		let deleteButton = document.createElement('button')
-		deleteButton.textContent = 'Delete'
+		deleteButton.textContent = '\u{1F5D1}'
 		deleteButton.addEventListener('click', (event) => {
 			localStorage.removeItem(poem.id)
 			// 'refresh' the poems displayed
@@ -106,7 +106,7 @@ let displayPoems = () => {
 
 		// adding print button
 		let printButton = document.createElement('button')
-		printButton.textContent = 'Print'
+		printButton.textContent = '\u{1F5A8}'
 		printButton.addEventListener('click', (event) => {
 			window.print()
 		})
@@ -115,7 +115,7 @@ let displayPoems = () => {
 
 		// share button w/ web share api
 		let shareButton = document.createElement('button')
-		shareButton.textContent = 'Share'
+		shareButton.textContent = '\u{1F517}'
 
 		// this function needs to be asyncronous to work like in my last project
 		let sharing = false
