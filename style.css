@@ -1,6 +1,7 @@
 /* variables */
 :root {
 	--header-color: #2a3d66;
+	--background-color: #ffffff;
 	--text-color: #333333;
 	--highlight-color: red;
 	--font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -59,6 +60,23 @@ body {
 }
 
 /* poem sections */
-.poem {
+.poem,
+.random-poem {
 	padding: var(--padding);
+	max-height: 75vh;
+	overflow: hidden;
+}
+
+section.random-poem {
+  background: linear-gradient(
+    to bottom,
+    var(--text-color) 25%,
+    var(--background-color) 100%
+  );
+  /* https://css-tricks.com/snippets/css/gradient-text/ */
+  /* using this to change the gradient of the random poem without having to do it in js */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }

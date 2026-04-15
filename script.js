@@ -8,9 +8,11 @@ poemText.addEventListener('input', () => {
 	poemText.style.height = 'auto'
 	poemText.style.height = poemText.scrollHeight
 
+	let randomPoem = document.querySelector('.random-poem')
 	// checking if the textarea has any text to change color of button
 	if (poemText.value !== '') {
 		submitButton.classList.add('allow')
+		randomPoem.classList.add('hidden')
 	} else {
 		submitButton.classList.remove('allow')
 	}
@@ -144,6 +146,7 @@ let writePoem = () => {
 	// using numerical ids for poem key in localStorage
 	// let poemID = localStorage.length + 1
 	// using a timestamp-based key instead so new poems never reuse the same localStorage key
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now
 	// console.log(Date.now())
 	let poemID = Date.now()
 
@@ -203,10 +206,30 @@ let displayRandomPoem = async () => {
 	console.log(selectedRandomPoem)
 	// creating element
 	let randomPoemElement = document.createElement('section')
-	randomPoemElement.innerHTML = `<h2>${selectedRandomPoem.title}</h2><p>${selectedRandomPoem.lines}</p>`
+	randomPoemElement.classList.add('random-poem')
+
+	// let titleElement = document.createElement('h2')
+	// titleElement.textContent = selectedRandomPoem.title
+	// randomPoemElement.appendChild(titleElement)
+
+	// similar to how i displayed the lines from localStorage
+	selectedRandomPoem.lines.forEach((line) => {
+		let lineElement = document.createElement('p')
+		lineElement.textContent = line
+		randomPoemElement.appendChild(lineElement)
+	})
+
 	document.body.appendChild(randomPoemElement)
+
+	// adding and remove hidden class if we have poems in localStorage
+	if (localStorage.length == 0) {
+		randomPoemElement.classList.remove('hidden')
+	} else {
+		randomPoemElement.classList.add('hidden')
+	}
+
 }
 
 // display poems once the page loads
 displayPoems()
-// displayRandomPoem()
+displayRandomPoem()
