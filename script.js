@@ -1,9 +1,4 @@
 let writingArea = document.getElementById('poem-form')
-let newPoemButton = document.getElementById('new-poem')
-
-newPoemButton.addEventListener('click', () => {
-	writingArea.classList.remove('hidden')
-})
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
