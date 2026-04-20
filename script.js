@@ -21,7 +21,8 @@ poemText.addEventListener('input', () => {
 			if (h2.style.opacity === '0') {
 				h2.classList.add('hidden')
 			}
-		})
+			// adding once: true to make event liostener run once: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
+		}, { once: true })
 
 		// same thing for fading out random poem
 		randomPoem.style.opacity = '0'
@@ -29,18 +30,18 @@ poemText.addEventListener('input', () => {
 			if (randomPoem.style.opacity === '0') {
 				randomPoem.classList.add('hidden')
 			}
-		})
+		}, { once: true })
 
 	} else {
 		submitButton.classList.remove('allow')
 
 		// fade in h2
-		h2.classList.remove('hidden')
+		h2.style.display = ''
 		requestAnimationFrame(() => { 
 			h2.style.opacity = '1' 
 		})
 
-		// fade in h2 and random poem
+		// fade in random poem
 		if (localStorage.length === 0) {
 			randomPoem.classList.remove('hidden')
 			requestAnimationFrame(() => { 
@@ -221,38 +222,35 @@ writingArea.addEventListener('submit', (event) => {
 
 // adding another function using this api i found to retrieve a random poem (might use this for something later): https://github.com/thundercomb/poetrydb/blob/master/README.md
 // fetch is asynchronous so i have to use async/await here to prevent an error: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-let getRandomPoem = async () => {
-	// using fetch method here with async/await: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-	let response = await fetch('https://poetrydb.org/random')
-	let randomPoem = await response.json()
-	// checking
-	console.log(randomPoem)
-	// passing the poem to displayRandomPoem function
-	return randomPoem
+let getRandomPoems = async () => {
+	// fetching 10 random poems at once instead of just 1
+	let response = await fetch('https://poetrydb.org/random/10')
+	let poems = await response.json()
+	console.log(poems)
+	return poems
 }
 
-// function to display random poem on the page (will use this for something later)
+// function to display random poem (now displaying 10 poems) on the page (will use this for something later)
 let displayRandomPoem = async () => {
-	// using await here so there's no error again when running getRandomPoem and passsing poem
-	let randomPoem = await getRandomPoem()
-	let selectedRandomPoem = randomPoem[0]
-	// checking the json object
-	console.log(selectedRandomPoem)
+	let poems = await getRandomPoems()
+	let currentIndex = 0
+
 	// creating element
 	let randomPoemElement = document.createElement('section')
 	randomPoemElement.classList.add('random-poem')
 
-	// let titleElement = document.createElement('h2')
-	// titleElement.textContent = selectedRandomPoem.title
-	// randomPoemElement.appendChild(titleElement)
+	// helper to fill the element with a poem's lines
+	let showPoem = (poem) => {
+		randomPoemElement.innerHTML = ''
+		poem.lines.forEach((line) => {
+			let lineElement = document.createElement('p')
+			lineElement.textContent = line
+			randomPoemElement.appendChild(lineElement)
+		})
+	}
 
-	// similar to how i displayed the lines from localStorage
-	selectedRandomPoem.lines.forEach((line) => {
-		let lineElement = document.createElement('p')
-		lineElement.textContent = line
-		randomPoemElement.appendChild(lineElement)
-	})
-
+	// show the first poem
+	showPoem(poems[currentIndex])
 	document.body.appendChild(randomPoemElement)
 
 	// adding and remove hidden class if we have poems in localStorage
@@ -267,6 +265,20 @@ let displayRandomPoem = async () => {
 		randomPoemElement.classList.add('hidden')
 	}
 
+	// rotate to next poem every 7 seconds
+	setInterval(() => {
+		// fade out
+		randomPoemElement.style.opacity = '0'
+		randomPoemElement.addEventListener('transitionend', () => {
+			// move to next poem
+			currentIndex = (currentIndex + 1) % poems.length
+			showPoem(poems[currentIndex])
+			// fade in
+			requestAnimationFrame(() => { 
+				randomPoemElement.style.opacity = '1' 
+			})
+		}, { once: true })
+	}, 5000)
 }
 
 // display poems once the page loads
