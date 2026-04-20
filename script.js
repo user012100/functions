@@ -322,6 +322,8 @@ setInterval(() => {
 // advance to a random phrase when a poem is submitted
 let nextPlaceholder = () => {
 	placeholderIndex = Math.floor(Math.random() * placeholders.length)
+	dotCount = 1
+	poemText.placeholder = placeholders[placeholderIndex] + '.'
 }
 
 // display poems once the page loads
