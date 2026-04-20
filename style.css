@@ -1,6 +1,5 @@
 /* variables */
 :root {
-	--header-color: #2a3d66;
 	--background-color: #ffffff;
 	--text-color: #333333;
 	--highlight-color: red;
@@ -9,21 +8,51 @@
 	--text-size: 1.15rem;
 	--button-size: 2rem;
 	--line-height: 1.5;
+	--font-weight: 500;
 }
 
-/* header */
+/* headers */
+h1, h2 {
+	padding-inline: var(--padding);
+	padding-block-start: var(--padding);
+	line-height: var(--line-height);
+	display: block;
+	text-transform: uppercase;
+}
+
 h1 {
-	color: var(--header-color);
-	font-family: var(--font);
+	background-color: var(--background-color);
+	z-index: 1;
 }
 
 /* main text */
-body {
+h1, h2, p, textarea {
 	color: var(--text-color);
 	font-family: var(--font);
 	font-size: var(--text-size);
 	line-height: var(--line-height);
-	font-weight: 500;
+	font-weight: var(--font-weight);
+}
+
+.poem-preview {
+	color: var(--highlight-color);
+	font-family: var(--font);
+	font-size: var(--text-size);
+	line-height: var(--line-height);
+	font-weight: var(--font-weight);
+}
+
+.poem-expanded {
+	color: var(--text-color);
+	font-family: var(--font);
+	font-size: var(--text-size);
+	line-height: var(--line-height);
+	font-weight: var(--font-weight);
+}
+
+body::selection {
+	background: var(--highlight-color);
+	color: var(--background-color);
 }
 
 /* hidden class */
@@ -37,8 +66,8 @@ body {
 	bottom: 0;
 	display: flex;
 	width: 100%;
-	align-items: last baseline;
-	padding-inline: var(--padding);
+	align-items: flex-end;
+	padding: var(--padding);
 }
 
 /* displayed poems */
@@ -46,23 +75,33 @@ body {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	text-wrap: break-word;
 }
 
 /* input in textarea */
 #poem-text {
 	flex: 1 1 auto;
 	overflow: hidden;
-	height: auto;
+	height: 2rem;
+	max-height: 89vh;
+	display: flex;
+	align-items: baseline;
+	/* background-color: var(--background-color); */
 }
 
 /* + button */
 #submit {
 	flex: 0 0 auto;
 	font-size: var(--button-size);
+	padding: 0.75rem;
 }
 
-/* allow submission class */
-.allow {
+#submit svg {
+	transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.allow svg {
+	transform: rotate(90deg);
 	color: var(--highlight-color);
 }
 
@@ -70,7 +109,7 @@ body {
 .poem,
 .random-poem {
 	padding: var(--padding);
-	max-height: 75vh;
+	max-height: 70%;
 	overflow: hidden;
 }
 

@@ -7,10 +7,23 @@
 		<script defer src="script.js"></script>
 	</head>
 	<body>
-		<form id="poem-form">
+		<h1>untold,</h1>
+		<h2>a sacred space for your words</h2>
+		<form id="poem-form" class="hidden">
 			<!-- <input id="poem-title" placeholder="Title..."></input> -->
-			<textarea id="poem-text" placeholder="Write your poem here..."></textarea>
-			<button id="submit" type="submit">+</button>
+			<textarea id="poem-text" placeholder="Write what you feel..."></textarea>
+			<!-- 
+				Write what you feel…
+				Write what you hear…
+				Write what you see…
+				Write what’s on your mind…
+				Write what lingers…
+				Write what won’t leave you alone…
+				Write what you can’t say out loud…
+				*i need a function that will cycle thru these and also animate the ellipsis for each one*
+			-->
+				<!-- svg from https://lucide.dev/ -->
+			<button id="submit" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg></button>
 		</form>
 	</body>
 </html>

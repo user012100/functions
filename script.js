@@ -1,20 +1,24 @@
 let writingArea = document.getElementById('poem-form')
 let poemText = document.getElementById('poem-text')
 let submitButton = document.getElementById('submit')
+let h2 = document.querySelector('h2')
 
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
 // using scrollHeight in event listener to get the height of the text content and setting it as the height of the textarea
 poemText.addEventListener('input', () => {
-	poemText.style.height = 'auto'
+	poemText.style.height = '2rem'
 	poemText.style.height = poemText.scrollHeight
 
 	let randomPoem = document.querySelector('.random-poem')
 	// checking if the textarea has any text to change color of button
 	if (poemText.value !== '') {
 		submitButton.classList.add('allow')
+		// need to make these fade out animations
 		randomPoem.classList.add('hidden')
+		h2.classList.add('hidden')
 	} else {
 		submitButton.classList.remove('allow')
+		h2.classList.remove('hidden')
 	}
 })
 
@@ -57,6 +61,7 @@ let displayPoems = () => {
 	// clearing input fields 
 	// document.getElementById('poem-title').value = ''
     document.getElementById('poem-text').value = ''
+	document.getElementById('poem-text').style.height = '2rem'
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
 	poems = retrievePoems()
@@ -95,7 +100,7 @@ let displayPoems = () => {
 
 		// adding delete button
 		let deleteButton = document.createElement('button')
-		deleteButton.textContent = '\u{1F5D1}'
+		deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
 		deleteButton.addEventListener('click', (event) => {
 			localStorage.removeItem(poem.id)
 			// 'refresh' the poems displayed
@@ -105,13 +110,13 @@ let displayPoems = () => {
 		poemElement.appendChild(deleteButton)
 
 		// adding print button
-		let printButton = document.createElement('button')
-		printButton.textContent = '\u{1F5A8}'
-		printButton.addEventListener('click', (event) => {
-			window.print()
-		})
+		// let printButton = document.createElement('button')
+		// printButton.textContent = '\u{1F5A8}'
+		// printButton.addEventListener('click', (event) => {
+		// 	window.print()
+		// })
 
-		poemElement.appendChild(printButton)
+		// poemElement.appendChild(printButton)
 
 		// share button w/ web share api
 		let shareButton = document.createElement('button')
