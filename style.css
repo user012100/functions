@@ -60,6 +60,12 @@ body::selection {
 	display: none;
 }
 
+/* page fade in on load */
+body {
+	opacity: 0;
+	transition: opacity 0.75s ease;
+}
+
 /* fade transitions */
 h2,
 .random-poem {
@@ -92,7 +98,7 @@ h2,
 	height: 2rem;
 	max-height: 89vh;
 	display: flex;
-	align-items: baseline;
+	align-items: flex-end;
 	/* background-color: var(--background-color); */
 }
 
@@ -101,6 +107,7 @@ h2,
 	flex: 0 0 auto;
 	font-size: var(--button-size);
 	padding: 0.75rem;
+	transform: translateY(0.25rem);
 }
 
 #submit svg {

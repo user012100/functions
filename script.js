@@ -219,6 +219,7 @@ writingArea.addEventListener('submit', (event) => {
 	
 	// writing poem to localStorage on button submission
 	writePoem()
+	nextPlaceholder()
 	// changing clearInput to true so the textarea only clears when a new poem is submitted
 	displayPoems(true)
 })
@@ -281,9 +282,51 @@ let displayRandomPoem = async () => {
 				randomPoemElement.style.opacity = '1' 
 			})
 		}, { once: true })
-	}, 5000)
+	}, 5500)
+}
+
+// cycling placeholder text
+let placeholders = [
+	'Write what you feel',
+	'Write what you hear',
+	'Write what you see',
+	"Write what's on your mind",
+	'Write what lingers',
+	"Write what won't leave you alone",
+	"Write what you can't say out loud"
+]
+
+let placeholderIndex = Math.floor(Math.random() * placeholders.length)
+let dotCount = 1
+
+// animating the elipsis
+setInterval(() => {
+	if (dotCount === 1) {
+		poemText.placeholder = placeholders[placeholderIndex] + '.'
+	}
+	if (dotCount === 2) {
+		poemText.placeholder = placeholders[placeholderIndex] + '..'
+	}
+	if (dotCount === 3) {
+		poemText.placeholder = placeholders[placeholderIndex] + '...'
+	}
+
+	dotCount++
+
+	if (dotCount > 3) {
+		dotCount = 1
+	}
+
+}, 500)
+
+// advance to a random phrase when a poem is submitted
+let nextPlaceholder = () => {
+	placeholderIndex = Math.floor(Math.random() * placeholders.length)
 }
 
 // display poems once the page loads
 displayPoems()
-displayRandomPoem()
+// wait for api to load before fading the page in
+displayRandomPoem().then(() => {
+	document.body.style.opacity = '1'
+})
