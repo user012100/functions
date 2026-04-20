@@ -256,8 +256,13 @@ let displayRandomPoem = async () => {
 	document.body.appendChild(randomPoemElement)
 
 	// adding and remove hidden class if we have poems in localStorage
+	// updated to fade as well
 	if (localStorage.length == 0) {
+		randomPoemElement.style.opacity = '0'
 		randomPoemElement.classList.remove('hidden')
+		requestAnimationFrame(() => { 
+			randomPoemElement.style.opacity = '1' 
+		})
 	} else {
 		randomPoemElement.classList.add('hidden')
 	}
