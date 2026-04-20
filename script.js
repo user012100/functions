@@ -13,12 +13,40 @@ poemText.addEventListener('input', () => {
 	// checking if the textarea has any text to change color of button
 	if (poemText.value !== '') {
 		submitButton.classList.add('allow')
-		// need to make these fade out animations
-		randomPoem.classList.add('hidden')
-		h2.classList.add('hidden')
+
+		// instead of just adding display none i want to fade them
+		// https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event 
+		h2.style.opacity = '0'
+		h2.addEventListener('transitionend', () => {
+			if (h2.style.opacity === '0') {
+				h2.classList.add('hidden')
+			}
+		})
+
+		// same thing for fading out random poem
+		randomPoem.style.opacity = '0'
+		randomPoem.addEventListener('transitionend', () => {
+			if (randomPoem.style.opacity === '0') {
+				randomPoem.classList.add('hidden')
+			}
+		})
+
 	} else {
 		submitButton.classList.remove('allow')
+
+		// fade in h2
 		h2.classList.remove('hidden')
+		requestAnimationFrame(() => { 
+			h2.style.opacity = '1' 
+		})
+
+		// fade in h2 and random poem
+		if (localStorage.length === 0) {
+			randomPoem.classList.remove('hidden')
+			requestAnimationFrame(() => { 
+				randomPoem.style.opacity = '1' 
+			})
+		}
 	}
 })
 
@@ -180,6 +208,7 @@ writingArea.addEventListener('submit', (event) => {
 	// checking for value in textarea before writing
 	if (poemText.value == '') {
 		// console.log('no text entered')
+		poemText.focus()
 		return
 	} else {
 		submitButton.classList.remove('allow')

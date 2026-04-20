@@ -60,6 +60,13 @@ body::selection {
 	display: none;
 }
 
+/* fade transitions */
+h2,
+.random-poem {
+	opacity: 1;
+	transition: opacity 0.4s ease;
+}
+
 /* new poem button */
 #poem-form {
 	position: fixed;
