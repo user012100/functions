@@ -64,7 +64,7 @@ body::selection {
 h2,
 .random-poem {
 	opacity: 1;
-	transition: opacity 0.4s ease;
+	transition: opacity 0.75s ease;
 }
 
 /* new poem button */
@@ -104,7 +104,7 @@ h2,
 }
 
 #submit svg {
-	transition: transform 0.3s ease, color 0.3s ease;
+	transition: transform 0.4s ease, color 0.4s ease;
 }
 
 .allow svg {

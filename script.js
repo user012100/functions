@@ -79,7 +79,8 @@ let retrievePoems = () => {
 	return poems
 }
 
-let displayPoems = () => {
+// adding clear input parameter to clear textarea only when submitting
+let displayPoems = (clearInput = false) => {
 	// clearing poems so we dont have to refresh the page
 	let poemSections = document.querySelectorAll('.poem')
 
@@ -87,10 +88,11 @@ let displayPoems = () => {
 		section.remove()
 	})
 
-	// clearing input fields 
-	// document.getElementById('poem-title').value = ''
-    document.getElementById('poem-text').value = ''
-	document.getElementById('poem-text').style.height = '2rem'
+	// only clear the textarea when a new poem was just submitted
+	if (clearInput) {
+		document.getElementById('poem-text').value = ''
+		document.getElementById('poem-text').style.height = '2rem'
+	}
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
 	poems = retrievePoems()
@@ -217,7 +219,8 @@ writingArea.addEventListener('submit', (event) => {
 	
 	// writing poem to localStorage on button submission
 	writePoem()
-	displayPoems()
+	// changing clearInput to true so the textarea only clears when a new poem is submitted
+	displayPoems(true)
 })
 
 // adding another function using this api i found to retrieve a random poem (might use this for something later): https://github.com/thundercomb/poetrydb/blob/master/README.md
