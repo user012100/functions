@@ -131,8 +131,8 @@ let displayPoems = (clearInput) => {
 		let preview = document.createElement('section')
 		preview.classList.add('poem-preview')
 
-		// slicing the lines to only show first 4
-		lines.slice(0, 4).forEach((line) => {
+		// slicing the lines to only show first 6
+		lines.slice(0, 6).forEach((line) => {
 			let lineElement = document.createElement('p')
 			lineElement.textContent = line
 			preview.appendChild(lineElement)
