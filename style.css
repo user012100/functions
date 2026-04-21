@@ -131,6 +131,10 @@ h2,
 	color: var(--highlight-color);
 }
 
+.allow {
+	cursor: pointer;
+}
+
 /* poem sections */
 .poem,
 .random-poem {
@@ -140,11 +144,7 @@ h2,
 }
 
 section.random-poem {
-	background: linear-gradient(
-		to bottom,
-		var(--text-color) 25%,
-		var(--background-color) 100%
-	);
+	background: linear-gradient(to bottom, var(--text-color) 25%, var(--background-color) 100%);
 	/* https://css-tricks.com/snippets/css/gradient-text/ */
 	/* using this to change the gradient of the random poem without having to do it in js */
 	-webkit-background-clip: text;
