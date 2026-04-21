@@ -22,7 +22,6 @@ h1, h2 {
 
 h1 {
 	background-color: var(--background-color);
-	z-index: 1;
 }
 
 /* main text */
@@ -81,6 +80,19 @@ h2,
 	width: 100%;
 	align-items: flex-end;
 	padding: var(--padding);
+	background-color: var(--background-color);
+}
+
+/* pseudo element for gradient effect */
+#poem-form::before {
+    content: '';
+    position: absolute;
+    top: -4rem;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    background: linear-gradient(to bottom, transparent, var(--background-color));
+    pointer-events: none;
 }
 
 /* displayed poems */
@@ -94,9 +106,9 @@ h2,
 /* input in textarea */
 #poem-text {
 	flex: 1 1 auto;
-	overflow: hidden;
+	overflow-y: auto;
 	height: var(--button-size);
-	max-height: 89vh;
+	max-height: 90vh;
 	display: flex;
 	align-items: flex-end;
 	/* background-color: var(--background-color); */
