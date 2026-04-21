@@ -95,7 +95,7 @@ h2,
 #poem-text {
 	flex: 1 1 auto;
 	overflow: hidden;
-	height: 2rem;
+	height: var(--button-size);
 	max-height: 89vh;
 	display: flex;
 	align-items: flex-end;

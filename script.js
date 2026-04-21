@@ -6,22 +6,27 @@ let h2 = document.querySelector('h2')
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
 // using scrollHeight in event listener to get the height of the text content and setting it as the height of the textarea
 poemText.addEventListener('input', () => {
+	// using 2rem as default height (--button-size in my css variables)
 	poemText.style.height = '2rem'
 	poemText.style.height = poemText.scrollHeight
 
 	let randomPoem = document.querySelector('.random-poem')
 	// checking if the textarea has any text to change color of button
 	if (poemText.value !== '') {
+		// class that allows submission
 		submitButton.classList.add('allow')
 
-		// instead of just adding display none i want to fade them
-		// https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event 
+		// instead of just adding display none i wanted to fade them
 		h2.style.opacity = '0'
+		// https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event 
+		// to prevent things from fading and overlapping, i had to add an event listener that only adds class hidden on the end of the transition
 		h2.addEventListener('transitionend', () => {
+			// checking if opacity is 0 before adding display: none to it
 			if (h2.style.opacity === '0') {
 				h2.classList.add('hidden')
 			}
-			// adding once: true to make event liostener run once: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
+			// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
+			// adding once: true to make event listener run once (otherwise the poems overlap/transition too quickly if you type and delete things from the main input)
 		}, { once: true })
 
 		// same thing for fading out random poem
@@ -34,14 +39,16 @@ poemText.addEventListener('input', () => {
 
 	} else {
 		submitButton.classList.remove('allow')
+		nextPlaceholder()
 
 		// fade in h2
-		h2.style.display = ''
+		h2.classList.add('hidden')
+		// using requestAnimationFrame to make sure the opacity transitions after display is set to none (thru class)
 		requestAnimationFrame(() => { 
 			h2.style.opacity = '1' 
 		})
 
-		// fade in random poem
+		// fade in random poem (only if there's no poems in localstorage)
 		if (localStorage.length === 0) {
 			randomPoem.classList.remove('hidden')
 			requestAnimationFrame(() => { 
@@ -79,23 +86,27 @@ let retrievePoems = () => {
 	return poems
 }
 
-// adding clear input parameter to clear textarea only when submitting
-let displayPoems = (clearInput = false) => {
-	// clearing poems so we dont have to refresh the page
+let clearInput = false
+
+// adding clear boolean to prevent textarea input from being cleared when deleting poems
+let displayPoems = (clearInput) => {
+	// selecting poems
 	let poemSections = document.querySelectorAll('.poem')
 
+	// clearing them so we can 'refresh' the page basically with new poems upon submission/deleting
 	poemSections.forEach(section => {
 		section.remove()
 	})
 
-	// only clear the textarea when a new poem was just submitted
-	if (clearInput) {
+	// only clear the textarea when a new poem was just submitted (clearinput = true)
+	if (clearInput === true) {
 		document.getElementById('poem-text').value = ''
+		// setting the input area height to default height
 		document.getElementById('poem-text').style.height = '2rem'
 	}
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
-	poems = retrievePoems()
+	let poems = retrievePoems()
 	// checking
 	// console.log(poems)
 	// sorting poems by id in descending order so the most recent poem is at the top
@@ -115,6 +126,7 @@ let displayPoems = (clearInput = false) => {
 			lineElement.value = line
 
 			// event listener when the user clicks out of the input (after editing)
+			// IMPOORTANT: NEED TO CHANGE THIS TO BE ALL IN TEXTAREA FOR EASIER EDITING INSTEAD OF SEPARATE INPUTS !!!!!!!!!!
 			// https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event
 			lineElement.addEventListener('blur', (event) => {
 				lines[id] = lineElement.value
@@ -131,6 +143,7 @@ let displayPoems = (clearInput = false) => {
 
 		// adding delete button
 		let deleteButton = document.createElement('button')
+		// icon from https://lucide.dev/
 		deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
 		deleteButton.addEventListener('click', (event) => {
 			localStorage.removeItem(poem.id)
@@ -141,6 +154,7 @@ let displayPoems = (clearInput = false) => {
 		poemElement.appendChild(deleteButton)
 
 		// adding print button
+		// removed print button for now
 		// let printButton = document.createElement('button')
 		// printButton.textContent = '\u{1F5A8}'
 		// printButton.addEventListener('click', (event) => {
@@ -150,6 +164,7 @@ let displayPoems = (clearInput = false) => {
 		// poemElement.appendChild(printButton)
 
 		// share button w/ web share api
+		// IMPORTANT: NEED TO SET THIS UP PROPERLY (THE FORMATTING) AND TO USE  !!!!
 		let shareButton = document.createElement('button')
 		shareButton.textContent = '\u{1F517}'
 
@@ -161,7 +176,9 @@ let displayPoems = (clearInput = false) => {
 		// using example from my last project:
 		shareButton.addEventListener('click', async (event) => {
 			if (navigator.share) {
-				if (sharing) return
+				if (sharing) {
+					return
+				}
 				sharing = true
 				try {
 					await navigator.share({
@@ -220,7 +237,7 @@ writingArea.addEventListener('submit', (event) => {
 	// writing poem to localStorage on button submission
 	writePoem()
 	nextPlaceholder()
-	// changing clearInput to true so the textarea only clears when a new poem is submitted
+	// changing clearInput to true
 	displayPoems(true)
 })
 
@@ -236,14 +253,22 @@ let getRandomPoems = async () => {
 
 // function to display random poem (now displaying 10 poems) on the page (will use this for something later)
 let displayRandomPoem = async () => {
-	let poems = await getRandomPoems()
-	let currentIndex = 0
+	// fallback poems shown instantly while api loads
+	let poems = [
+		{ lines: ['I carry your heart with me', 'I carry it in my heart'] },
+		{ lines: ['Do not go gentle into that good night', 'Rage, rage against the dying of the light'] },
+		{ lines: ['Because I could not stop for Death —', 'He kindly stopped for me —'] },
+		{ lines: ['Two roads diverged in a wood, and I —', 'I took the one less traveled by'] }
+	]
+
+	// selecting a random poem to show first
+	let currentIndex = Math.floor(Math.random() * poems.length)
 
 	// creating element
 	let randomPoemElement = document.createElement('section')
 	randomPoemElement.classList.add('random-poem')
 
-	// helper to fill the element with a poem's lines
+	// filling the element with the poem's lines
 	let showPoem = (poem) => {
 		randomPoemElement.innerHTML = ''
 		poem.lines.forEach((line) => {
@@ -269,7 +294,7 @@ let displayRandomPoem = async () => {
 		randomPoemElement.classList.add('hidden')
 	}
 
-	// rotate to next poem every 7 seconds
+	// rotate to next poem
 	setInterval(() => {
 		// fade out
 		randomPoemElement.style.opacity = '0'
@@ -281,11 +306,16 @@ let displayRandomPoem = async () => {
 			requestAnimationFrame(() => { 
 				randomPoemElement.style.opacity = '1' 
 			})
+			// this again to prevent overlap
 		}, { once: true })
-	}, 5500)
+	}, 5000)
+
+	// fetching api poems in the background and swapping the array after its done loading
+	let apiPoems = await getRandomPoems()
+	poems = apiPoems
 }
 
-// cycling placeholder text
+// cycling placeholder text for input area
 let placeholders = [
 	'Write what you feel',
 	'Write what you hear',
@@ -296,8 +326,11 @@ let placeholders = [
 	"Write what you can't say out loud"
 ]
 
+// choosing random placeholder
 let placeholderIndex = Math.floor(Math.random() * placeholders.length)
 let dotCount = 1
+
+poemText.placeholder = placeholders[placeholderIndex] + '.'
 
 // animating the elipsis
 setInterval(() => {
@@ -311,6 +344,7 @@ setInterval(() => {
 		poemText.placeholder = placeholders[placeholderIndex] + '...'
 	}
 
+	// incrementing dot count every cycle
 	dotCount++
 
 	if (dotCount > 3) {
@@ -319,7 +353,7 @@ setInterval(() => {
 
 }, 500)
 
-// advance to a random phrase when a poem is submitted
+// next random placeholder when a poem is submitted
 let nextPlaceholder = () => {
 	placeholderIndex = Math.floor(Math.random() * placeholders.length)
 	dotCount = 1
@@ -328,7 +362,8 @@ let nextPlaceholder = () => {
 
 // display poems once the page loads
 displayPoems()
-// wait for api to load before fading the page in
-displayRandomPoem().then(() => {
+displayRandomPoem()
+// animation for page fade in on load
+requestAnimationFrame(() => {
 	document.body.style.opacity = '1'
 })
