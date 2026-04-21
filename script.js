@@ -2,6 +2,10 @@ let writingArea = document.getElementById('poem-form')
 let poemText = document.getElementById('poem-text')
 let submitButton = document.getElementById('submit')
 let h2 = document.querySelector('h2')
+let modal = document.getElementById('modal')
+let modalText = document.getElementById('modal-text')
+let modalDelete = document.getElementById('delete')
+let modalSave = document.getElementById('save')
 
 // main input event listener for textarea
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
@@ -127,7 +131,7 @@ let displayPoems = (clearInput) => {
 		let preview = document.createElement('section')
 		preview.classList.add('poem-preview')
 
-		// slicing the lines to only show first 3
+		// slicing the lines to only show first 4
 		lines.slice(0, 4).forEach((line) => {
 			let lineElement = document.createElement('p')
 			lineElement.textContent = line
@@ -143,10 +147,52 @@ let displayPoems = (clearInput) => {
 		expanded.value = lines.join('\n')
 
 		// event listener to show expanded view on click
+		// preview.addEventListener('click', () => {
+		// 	preview.classList.add('hidden')
+		// 	expanded.classList.remove('hidden')
+		// 	expanded.focus()
+		// })
+
 		preview.addEventListener('click', () => {
-			preview.classList.add('hidden')
-			expanded.classList.remove('hidden')
-			expanded.focus()
+			openModal(poem.id, lines)
+		})
+
+		// making a modal instead, following the example from class/my last project
+		let openModal = (poemId, lines) => {
+			currentPoemId = poemId
+			modalText.value = lines.join('\n')
+			modal.classList.remove('hidden')
+			// animating it to fade in
+			requestAnimationFrame(() => { 
+				modal.style.opacity = '1'
+			})
+			modalText.focus()
+		}
+
+		// function to close modal
+		let closeModal = () => {
+			modal.style.opacity = '0'
+			modal.addEventListener('transitionend', () => {
+				modal.classList.add('hidden')
+				modal.style.opacity = '0'
+			}, { once: true })
+		}
+
+		// listener for save button
+		modalSave.addEventListener('click', () => {
+			let updatedLines = modalText.value.split('\n')
+			localStorage.setItem(currentPoemId, JSON.stringify({ text: updatedLines }))
+			closeModal()
+			displayPoems()
+		})
+
+		// listener for delete button
+		modalDelete.addEventListener('click', () => {
+			// need to add another modal or pop up
+			// window.confirm('Are you sure you want to delete this masterpiece? This action cannot be undone.')
+			localStorage.removeItem(currentPoemId)
+			closeModal()
+			displayPoems()
 		})
 
 		poemElement.appendChild(expanded)
