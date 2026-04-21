@@ -124,37 +124,65 @@ let displayPoems = (clearInput) => {
 		// making a loop to parse thru each line to display on a new line
 		let lines = poem.text
 
-		lines.forEach((line, id) => {
-			let lineElement = document.createElement('input')
-			lineElement.value = line
+		let preview = document.createElement('section')
+		preview.classList.add('poem-preview')
 
-			// event listener when the user clicks out of the input (after editing)
-			// IMPOORTANT: NEED TO CHANGE THIS TO BE ALL IN TEXTAREA FOR EASIER EDITING INSTEAD OF SEPARATE INPUTS !!!!!!!!!!
-			// https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event
-			lineElement.addEventListener('blur', (event) => {
-				lines[id] = lineElement.value
-				// writing the updated poem back to localStorage
-				localStorage.setItem(poem.id, JSON.stringify({
-					id: poem.id,
-					// title: poem.title,
-					text: lines
-				}))
-			})
-			// adding lines to poem element
-			poemElement.appendChild(lineElement)
+		// slicing the lines to only show first 3
+		lines.slice(0, 4).forEach((line) => {
+			let lineElement = document.createElement('p')
+			lineElement.textContent = line
+			preview.appendChild(lineElement)
 		})
+
+		poemElement.appendChild(preview)
+
+		let expanded = document.createElement('textarea')
+		expanded.classList.add('expanded')
+		expanded.classList.add('hidden')
+		// joining the separate lines into one text area string with breaks
+		expanded.value = lines.join('\n')
+
+		// event listener to show expanded view on click
+		preview.addEventListener('click', () => {
+			preview.classList.add('hidden')
+			expanded.classList.remove('hidden')
+			expanded.focus()
+		})
+
+		poemElement.appendChild(expanded)
+
+		// CHANGING FROM USING INPUTS TO TEXTAREA + MAKING A PREVIEW/EXPANDED STATE
+		// lines.forEach((line, id) => {
+		// 	let lineElement = document.createElement('input')
+		// 	lineElement.value = line
+
+		// 	// event listener when the user clicks out of the input (after editing)
+		// 	// IMPOORTANT: NEED TO CHANGE THIS TO BE ALL IN TEXTAREA FOR EASIER EDITING INSTEAD OF SEPARATE INPUTS !!!!!!!!!!
+		// 	// https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event
+		// 	lineElement.addEventListener('blur', (event) => {
+		// 		lines[id] = lineElement.value
+		// 		// writing the updated poem back to localStorage
+		// 		localStorage.setItem(poem.id, JSON.stringify({
+		// 			id: poem.id,
+		// 			// title: poem.title,
+		// 			text: lines
+		// 		}))
+		// 	})
+		// 	// adding lines to poem element
+		// 	poemElement.appendChild(lineElement)
+		// })
 
 		// adding delete button
-		let deleteButton = document.createElement('button')
-		// icon from https://lucide.dev/
-		deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
-		deleteButton.addEventListener('click', (event) => {
-			localStorage.removeItem(poem.id)
-			// 'refresh' the poems displayed
-			displayPoems()
-		})
+		// let deleteButton = document.createElement('button')
+		// // icon from https://lucide.dev/
+		// deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
+		// deleteButton.addEventListener('click', (event) => {
+		// 	localStorage.removeItem(poem.id)
+		// 	// 'refresh' the poems displayed
+		// 	displayPoems()
+		// })
 
-		poemElement.appendChild(deleteButton)
+		// poemElement.appendChild(deleteButton)
 
 		// adding print button
 		// removed print button for now
@@ -168,31 +196,31 @@ let displayPoems = (clearInput) => {
 
 		// share button w/ web share api
 		// IMPORTANT: NEED TO SET THIS UP PROPERLY (THE FORMATTING) AND TO USE  !!!!
-		let shareButton = document.createElement('button')
-		shareButton.textContent = '\u{1F517}'
+		// let shareButton = document.createElement('button')
+		// shareButton.textContent = '\u{1F517}'
 
-		// this function needs to be asyncronous to work like in my last project
-		let sharing = false
+		// // this function needs to be asyncronous to work like in my last project
+		// let sharing = false
 
-		poemElement.appendChild(shareButton)
+		// poemElement.appendChild(shareButton)
 
-		// using example from my last project:
-		shareButton.addEventListener('click', async (event) => {
-			if (navigator.share) {
-				if (sharing) {
-					return
-				}
-				sharing = true
-				try {
-					await navigator.share({
-						// title: poem.title,
-						text: poem.text
-					})
-				} finally {
-					sharing = false
-				}
-			}
-		})
+		// // using example from my last project:
+		// shareButton.addEventListener('click', async (event) => {
+		// 	if (navigator.share) {
+		// 		if (sharing) {
+		// 			return
+		// 		}
+		// 		sharing = true
+		// 		try {
+		// 			await navigator.share({
+		// 				// title: poem.title,
+		// 				text: poem.text
+		// 			})
+		// 		} finally {
+		// 			sharing = false
+		// 		}
+		// 	}
+		// })
 
 		document.body.appendChild(poemElement)
 	})

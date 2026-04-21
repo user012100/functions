@@ -39,6 +39,12 @@ h1, h2, p, textarea {
 	font-size: var(--text-size);
 	line-height: var(--line-height);
 	font-weight: var(--font-weight);
+	cursor: pointer;
+	background: linear-gradient(to bottom, var(--highlight-color) 0%, transparent 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
 }
 
 .poem-expanded {
@@ -47,6 +53,7 @@ h1, h2, p, textarea {
 	font-size: var(--text-size);
 	line-height: var(--line-height);
 	font-weight: var(--font-weight);
+	resize: none;
 }
 
 body::selection {
@@ -85,14 +92,14 @@ h2,
 
 /* pseudo element for gradient effect */
 #poem-form::before {
-    content: '';
-    position: absolute;
-    top: -4rem;
-    left: 0;
-    right: 0;
-    height: 4rem;
-    background: linear-gradient(to bottom, transparent, var(--background-color));
-    pointer-events: none;
+	content: '';
+	position: absolute;
+	top: -4rem;
+	left: 0;
+	right: 0;
+	height: 4rem;
+	background: linear-gradient(to bottom, transparent, var(--background-color));
+	pointer-events: none;
 }
 
 /* displayed poems */
