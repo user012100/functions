@@ -3,6 +3,7 @@ let poemText = document.getElementById('poem-text')
 let submitButton = document.getElementById('submit')
 let h2 = document.querySelector('h2')
 
+// main input event listener for textarea
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
 // using scrollHeight in event listener to get the height of the text content and setting it as the height of the textarea
 poemText.addEventListener('input', () => {
@@ -42,8 +43,8 @@ poemText.addEventListener('input', () => {
 		nextPlaceholder()
 
 		// fade in h2
-		h2.classList.add('hidden')
-		// using requestAnimationFrame to make sure the opacity transitions after display is set to none (thru class)
+		h2.classList.remove('hidden')
+		// using requestAnimationFrame to make sure the opacity transitions after display is set to none
 		requestAnimationFrame(() => { 
 			h2.style.opacity = '1' 
 		})
@@ -60,6 +61,7 @@ poemText.addEventListener('input', () => {
 
 // following the example from https://github.com/typography-interaction-2526/forms-params-storage
 
+// function to retrieve poems from localstorage as an array
 let retrievePoems = () => {
 	// making an array with objects in it from localStorage
 	let poems = []
@@ -86,6 +88,7 @@ let retrievePoems = () => {
 	return poems
 }
 
+// boolean to check if textarea is empty
 let clearInput = false
 
 // adding clear boolean to prevent textarea input from being cleared when deleting poems
