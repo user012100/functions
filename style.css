@@ -26,7 +26,7 @@ h1, h2 {
 
 h2 {
 	padding-inline: var(--padding);
-	padding-block-start: var(--padding);
+	padding-block: var(--padding);
 }
 
 header {
@@ -245,7 +245,7 @@ textarea::placeholder {
 .random-poem {
 	padding-inline: var(--padding);
 	padding-block-start: var(--padding);
-	max-height: 75vh;
+	max-height: 65vh;
 	overflow: hidden;
 }
 
