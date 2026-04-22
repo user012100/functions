@@ -9,6 +9,27 @@ let modalText = document.getElementById('modal-text')
 let modalDelete = document.getElementById('delete')
 let modalSave = document.getElementById('save')
 let poemSection = document.getElementById('poems')
+let infoButton = document.getElementById('info')
+let infoModal = document.getElementById('info-modal')
+let infoClose = document.getElementById('info-close')
+
+
+// info button event listener
+infoButton.addEventListener('click', () => {
+	infoModal.classList.remove('hidden')
+	infoModal.style.opacity = '0'
+	requestAnimationFrame(() => {
+		infoModal.style.opacity = '1'
+	})
+})
+
+// info close button
+infoClose.addEventListener('click', () => {
+	infoModal.style.opacity = '0'
+	infoModal.addEventListener('transitionend', () => {
+		infoModal.classList.add('hidden')
+	}, { once: true })
+})
 
 // main input event listener for textarea
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize

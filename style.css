@@ -205,6 +205,10 @@ textarea::placeholder {
 	color: var(--second-color);
 }
 
+#info:hover svg {
+	color: var(--highlight-color);
+}
+
 /* + button */
 #submit {
 	flex: 0 0 auto;
@@ -222,6 +226,10 @@ textarea::placeholder {
 #submit.allow svg {
 	transform: rotate(90deg);
 	color: var(--highlight-color);
+}
+
+#submit.allow:hover svg {
+	color: var(--text-color);
 }
 
 /* poem sections */
@@ -324,8 +332,54 @@ section.random-poem {
 	color: var(--highlight-color);
 }
 
+#modal-buttons button:hover svg {
+	color: var(--text-color);
+}
+
 #modal.hidden {
 	display: none;
+}
+
+#info-modal {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--background-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.4s ease;
+	z-index: 4;
+	padding: var(--padding);
+}
+
+#info-modal.hidden {
+	display: none;
+}
+
+#info-close {
+	position: absolute;
+	top: var(--padding);
+	right: var(--padding);
+	padding: var(--button-padding);
+}
+
+#info-close svg {
+	transition: color 0.4s ease;
+	cursor: pointer;
+	color: var(--highlight-color);
+}
+
+#info-close:hover svg {
+	color: var(--text-color);
+}
+
+#info-modal p {
+	max-width: 48ch;
+	/* text-align: center; */
+	color: var(--text-color);
 }
 
 #poems.hidden {
