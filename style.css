@@ -139,7 +139,6 @@ h2 {
 	display: none;
 }
 
-/* hide extra poems on mobile, only show first */
 #random-poems-container .random-poem:not(:first-child) {
 	display: none;
 }
