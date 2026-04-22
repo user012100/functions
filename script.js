@@ -432,7 +432,7 @@ writingArea.addEventListener('submit', (event) => {
 // fetch is asynchronous so i have to use async/await here to prevent an error: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 let getRandomPoems = async () => {
 	// fetching 10 random poems at once instead of just 1
-	let response = await fetch('https://poetrydb.org/random/10')
+	let response = await fetch('https://poetrydb.org/random/20')
 	let poems = await response.json()
 	// console.log(poems)
 	return poems
@@ -643,13 +643,13 @@ let displayRandomPoem = async () => {
 
 	// fill each element with a different poem from the array
 	let showPoems = (startIndex) => {
-		poemElements.forEach((el, i) => {
+		poemElements.forEach((element, i) => {
 			let poem = poems[(startIndex + i) % poems.length]
-			el.innerHTML = ''
+			element.innerHTML = ''
 			poem.lines.forEach((line) => {
 				let lineElement = document.createElement('p')
 				lineElement.textContent = line
-				el.appendChild(lineElement)
+				element.appendChild(lineElement)
 			})
 		})
 	}
@@ -673,7 +673,11 @@ let displayRandomPoem = async () => {
 		if (container.classList.contains('hidden')) { return }
 		container.style.opacity = '0'
 		container.addEventListener('transitionend', () => {
-			currentIndex = (currentIndex + 1) % poems.length
+			let nextIndex = Math.floor(Math.random() * poems.length)
+			if (nextIndex === currentIndex) {
+				nextIndex = (nextIndex + 1) % poems.length
+			}
+			currentIndex = nextIndex
 			showPoems(currentIndex)
 			requestAnimationFrame(() => { 
 				container.style.opacity = '1' 

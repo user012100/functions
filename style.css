@@ -11,7 +11,6 @@
 	--button-padding: 0.75rem;
 	--line-height: 1.5;
 	--font-weight: 500;
-	--header-weight: 800;
 	/* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/caret-color */
 	caret-color: var(--highlight-color);
 }
@@ -20,7 +19,6 @@
 h1, h2 {
 	line-height: var(--line-height);
 	display: block;
-	font-weight: 300;
 	/* text-transform: uppercase; */
 }
 
