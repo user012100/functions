@@ -18,20 +18,28 @@
 
 /* headers */
 h1, h2 {
-	padding-inline: var(--padding);
-	padding-block-start: var(--padding);
 	line-height: var(--line-height);
 	display: block;
 	font-weight: 300;
 	/* text-transform: uppercase; */
 }
 
-h1 {
+h2 {
+	padding-inline: var(--padding);
+	padding-block-start: var(--padding);
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-inline: var(--padding);
+	padding-block-start: var(--padding);
 	background-color: var(--background-color);
 	top: 0;
 }
 
-h1.gradient::after {
+header.gradient::after {
 	content: '';
 	position: absolute;
 	bottom: -2.5rem;
@@ -58,6 +66,7 @@ h1, h2, p, textarea {
 	line-height: var(--line-height);
 	font-weight: var(--font-weight);
 	cursor: pointer;
+	overflow-wrap: break-word;
 	background: linear-gradient(to bottom, var(--highlight-color) 0%, transparent 100%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -182,6 +191,17 @@ h2 {
 }
 
 textarea::placeholder {
+	color: var(--second-color);
+}
+
+#info {
+	flex: 0 0 auto;
+	padding: var(--button-padding);
+}
+
+#info svg {
+	transition: color 0.4s ease;
+	cursor: pointer;
 	color: var(--second-color);
 }
 

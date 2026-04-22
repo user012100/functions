@@ -2,6 +2,7 @@ let writingArea = document.getElementById('poem-form')
 let poemText = document.getElementById('poem-text')
 let submitButton = document.getElementById('submit')
 let h1 = document.querySelector('h1')
+let header = document.querySelector('header')
 let h2 = document.querySelector('h2')
 let modal = document.getElementById('modal')
 let modalText = document.getElementById('modal-text')
@@ -32,8 +33,8 @@ poemText.addEventListener('input', () => {
 			// checking if opacity is 0 before adding display: none to it
 			if (h2.style.opacity === '0') {
 				h2.classList.add('hidden')
-				h1.classList.add('gradient')
-				h1.style.position = 'sticky'
+				header.classList.add('gradient')
+				header.style.position = 'sticky'
 			}
 			// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
 			// adding once: true to make event listener run once (otherwise the poems overlap/transition too quickly if you type and delete things from the main input)
@@ -62,8 +63,8 @@ poemText.addEventListener('input', () => {
 		// fade in h2 and random poem (only if there is no saved poems)
 		if (localStorage.length === 0) {
 			h2.classList.remove('hidden')
-			h1.classList.remove('gradient')
-			h1.style.position = ''
+			header.classList.remove('gradient')
+			header.style.position = ''
 			requestAnimationFrame(() => { 
 				h2.style.opacity = '1' 
 			})
@@ -182,8 +183,8 @@ let displayPoems = (clearInput) => {
 	if (localStorage.length === 0) {
 		poemSection.classList.add('hidden')
 		h2.classList.remove('hidden')
-		h1.classList.remove('gradient')
-		h1.style.position = ''
+		header.classList.remove('gradient')
+		header.style.position = ''
 		// let randomPoem = document.querySelector('.random-poem')
 		let randomPoemsContainer = document.querySelector('#random-poems-container')
 		// if (randomPoem) {
@@ -205,8 +206,8 @@ let displayPoems = (clearInput) => {
 	if (localStorage.length > 0) {
 		poemSection.classList.remove('hidden')
 		h2.classList.add('hidden')
-		h1.classList.add('gradient')
-		h1.style.position = 'sticky'
+		header.classList.add('gradient')
+		header.style.position = 'sticky'
 	}
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
