@@ -1,11 +1,13 @@
 let writingArea = document.getElementById('poem-form')
 let poemText = document.getElementById('poem-text')
 let submitButton = document.getElementById('submit')
+let h1 = document.querySelector('h1')
 let h2 = document.querySelector('h2')
 let modal = document.getElementById('modal')
 let modalText = document.getElementById('modal-text')
 let modalDelete = document.getElementById('delete')
 let modalSave = document.getElementById('save')
+let poemSection = document.getElementById('poems')
 
 // main input event listener for textarea
 // from stackoverflow (option 2): https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
@@ -29,6 +31,7 @@ poemText.addEventListener('input', () => {
 			// checking if opacity is 0 before adding display: none to it
 			if (h2.style.opacity === '0') {
 				h2.classList.add('hidden')
+				h1.classList.add('gradient')
 			}
 			// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
 			// adding once: true to make event listener run once (otherwise the poems overlap/transition too quickly if you type and delete things from the main input)
@@ -48,6 +51,7 @@ poemText.addEventListener('input', () => {
 
 		// fade in h2
 		h2.classList.remove('hidden')
+		h1.classList.remove('gradient')
 		// using requestAnimationFrame to make sure the opacity transitions after display is set to none
 		requestAnimationFrame(() => { 
 			h2.style.opacity = '1' 
@@ -60,6 +64,51 @@ poemText.addEventListener('input', () => {
 				randomPoem.style.opacity = '1' 
 			})
 		}
+	}
+})
+
+// function to close modal
+let closeModal = () => {
+	modal.style.opacity = '0'
+	document.body.style.overflow = ''
+	modal.addEventListener('transitionend', () => {
+		modal.classList.add('hidden')
+		modal.style.opacity = '0'
+	}, { once: true })
+}
+
+// scroll to bottom when typing at the end of modal textarea
+modalText.addEventListener('input', () => {
+	// https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/selectionStart
+	// using position of the cursor (selectionstart) to see if its at the end to fix the weird issue where pseudo gradients cover the text as u type
+	if (modalText.selectionStart === modalText.value.length) {
+		modalText.scrollTop = modalText.scrollHeight
+	}
+})
+
+// listener for save button
+modalSave.addEventListener('click', () => {
+	// removing it from localstorage if empty
+	if (modalText.value === '') {
+		localStorage.removeItem(currentPoemId)
+	// otherwise update it with new text
+	} else {
+		let updatedLines = modalText.value.split('\n')
+		localStorage.setItem(currentPoemId, JSON.stringify({ 
+			text: updatedLines 
+		}))
+	}
+	closeModal()
+	displayPoems()
+})
+
+// listener for delete button
+modalDelete.addEventListener('click', () => {
+	// need to add another modal or pop up
+	if (window.confirm('Are you sure you want to delete this masterpiece? This action cannot be undone.')) {
+		localStorage.removeItem(currentPoemId)
+		closeModal()
+		displayPoems()
 	}
 })
 
@@ -87,7 +136,7 @@ let retrievePoems = () => {
 	})
 
 	// checking
-	console.log(poems)
+	// console.log(poems)
 	// returning it so we can use it in displayPoems
 	return poems
 }
@@ -112,6 +161,26 @@ let displayPoems = (clearInput) => {
 		document.getElementById('poem-text').style.height = '2rem'
 	}
 
+	if (localStorage.length === 0) {
+		poemSection.classList.add('hidden')
+		h2.classList.remove('hidden')
+		h1.classList.remove('gradient')
+		let randomPoem = document.querySelector('.random-poem')
+		if (randomPoem) {
+			randomPoem.classList.remove('hidden')
+			requestAnimationFrame(() => {
+				h2.style.opacity = '1'
+				randomPoem.style.opacity = '1'
+			})
+		}
+	}
+
+	if (localStorage.length > 0) {
+		poemSection.classList.remove('hidden')
+		h2.classList.add('hidden')
+		h1.classList.add('gradient')
+	}
+
 	// running retrievePoems here so we have the new retrieved poems from localStorage
 	let poems = retrievePoems()
 	// checking
@@ -132,13 +201,22 @@ let displayPoems = (clearInput) => {
 		preview.classList.add('poem-preview')
 
 		// slicing the lines to only show first 6
-		lines.slice(0, 6).forEach((line) => {
+		let previewLines = lines.slice(0, 6)
+		previewLines.forEach((line) => {
 			let lineElement = document.createElement('p')
 			lineElement.textContent = line
 			preview.appendChild(lineElement)
 		})
 
+		// single line gets solid color instead of gradient
+		if (previewLines.length === 1) {
+			preview.classList.add('single-line')
+		}
+
 		poemElement.appendChild(preview)
+		poemSection.appendChild(poemElement)
+		// console.log(poemElement)
+		// console.log(poemElement)
 
 		let expanded = document.createElement('textarea')
 		expanded.classList.add('expanded')
@@ -162,38 +240,13 @@ let displayPoems = (clearInput) => {
 			currentPoemId = poemId
 			modalText.value = lines.join('\n')
 			modal.classList.remove('hidden')
+			document.body.style.overflow = 'hidden'
 			// animating it to fade in
 			requestAnimationFrame(() => { 
 				modal.style.opacity = '1'
 			})
 			modalText.focus()
 		}
-
-		// function to close modal
-		let closeModal = () => {
-			modal.style.opacity = '0'
-			modal.addEventListener('transitionend', () => {
-				modal.classList.add('hidden')
-				modal.style.opacity = '0'
-			}, { once: true })
-		}
-
-		// listener for save button
-		modalSave.addEventListener('click', () => {
-			let updatedLines = modalText.value.split('\n')
-			localStorage.setItem(currentPoemId, JSON.stringify({ text: updatedLines }))
-			closeModal()
-			displayPoems()
-		})
-
-		// listener for delete button
-		modalDelete.addEventListener('click', () => {
-			// need to add another modal or pop up
-			// window.confirm('Are you sure you want to delete this masterpiece? This action cannot be undone.')
-			localStorage.removeItem(currentPoemId)
-			closeModal()
-			displayPoems()
-		})
 
 		poemElement.appendChild(expanded)
 
@@ -268,7 +321,7 @@ let displayPoems = (clearInput) => {
 		// 	}
 		// })
 
-		document.body.appendChild(poemElement)
+		poemSection.appendChild(poemElement)
 	})
 }
 
@@ -324,7 +377,7 @@ let getRandomPoems = async () => {
 	// fetching 10 random poems at once instead of just 1
 	let response = await fetch('https://poetrydb.org/random/10')
 	let poems = await response.json()
-	console.log(poems)
+	// console.log(poems)
 	return poems
 }
 
@@ -373,6 +426,10 @@ let displayRandomPoem = async () => {
 
 	// rotate to next poem
 	setInterval(() => {
+		// only rotate if element is visible
+		if (randomPoemElement.classList.contains('hidden')) { 
+			return 
+		}
 		// fade out
 		randomPoemElement.style.opacity = '0'
 		randomPoemElement.addEventListener('transitionend', () => {
@@ -436,6 +493,25 @@ let nextPlaceholder = () => {
 	dotCount = 1
 	poemText.placeholder = placeholders[placeholderIndex] + '.'
 }
+
+// focus on textarea when any key is pressed
+document.addEventListener('keydown', (event) => {
+	// also using shift will submit the poem or save it
+	if (event.key === 'Enter' && event.shiftKey) {
+		event.preventDefault()
+		if (modal.classList.contains('hidden')) {
+			submitButton.click()
+		} else {
+			modalSave.click()
+		}
+	} else if (event.key.length === 1) {
+		if (modal.classList.contains('hidden')) {
+			poemText.focus()
+		} else {
+			modalText.focus()
+		}
+	}
+})
 
 // display poems once the page loads
 displayPoems()
