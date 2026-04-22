@@ -28,7 +28,6 @@ h1, h2 {
 
 h1 {
 	background-color: var(--background-color);
-	position: sticky;
 	top: 0;
 }
 
@@ -98,6 +97,7 @@ h1, h2, p, textarea {
 
 #poems {
 	margin-block-end: calc(var(--padding) * 6);
+	max-width: 200ch;
 }
 
 body::selection {
@@ -132,6 +132,7 @@ h2,
 	align-items: flex-end;
 	padding: var(--padding);
 	background-color: var(--background-color);
+	padding-block-end: var(--button-size);
 }
 
 /* pseudo element for gradient effect */
@@ -282,4 +283,42 @@ section.random-poem {
 
 #modal.hidden {
 	display: none;
+}
+
+#poems.hidden {
+	display: none;
+}
+
+/* desktop layouts */
+@media (width > 800px) {
+	#poems {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.poem {
+		width: 50%;
+	}
+}
+
+@media (width > 1200px) {
+	#poems {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.poem {
+		width: 33%;
+	}
+}
+
+@media (width > 1600px) {
+	#poems {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.poem {
+		width: 25%;
+	}
 }

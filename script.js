@@ -32,6 +32,7 @@ poemText.addEventListener('input', () => {
 			if (h2.style.opacity === '0') {
 				h2.classList.add('hidden')
 				h1.classList.add('gradient')
+				h1.style.position = 'sticky'
 			}
 			// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#once
 			// adding once: true to make event listener run once (otherwise the poems overlap/transition too quickly if you type and delete things from the main input)
@@ -49,16 +50,15 @@ poemText.addEventListener('input', () => {
 		submitButton.classList.remove('allow')
 		nextPlaceholder()
 
-		// fade in h2
-		h2.classList.remove('hidden')
-		h1.classList.remove('gradient')
-		// using requestAnimationFrame to make sure the opacity transitions after display is set to none
-		requestAnimationFrame(() => { 
-			h2.style.opacity = '1' 
-		})
-
-		// fade in random poem (only if there's no poems in localstorage)
+		// fade in h2 and random poem (only if there is no saved poems)
 		if (localStorage.length === 0) {
+			h2.classList.remove('hidden')
+			h1.classList.remove('gradient')
+			h1.style.position = ''
+			requestAnimationFrame(() => { 
+				h2.style.opacity = '1' 
+			})
+
 			randomPoem.classList.remove('hidden')
 			requestAnimationFrame(() => { 
 				randomPoem.style.opacity = '1' 
@@ -74,6 +74,9 @@ let closeModal = () => {
 	modal.addEventListener('transitionend', () => {
 		modal.classList.add('hidden')
 		modal.style.opacity = '0'
+		if (localStorage.length > 0) {
+			poemSection.classList.remove('hidden')
+		}
 	}, { once: true })
 }
 
@@ -165,6 +168,7 @@ let displayPoems = (clearInput) => {
 		poemSection.classList.add('hidden')
 		h2.classList.remove('hidden')
 		h1.classList.remove('gradient')
+		h1.style.position = ''
 		let randomPoem = document.querySelector('.random-poem')
 		if (randomPoem) {
 			randomPoem.classList.remove('hidden')
@@ -179,6 +183,7 @@ let displayPoems = (clearInput) => {
 		poemSection.classList.remove('hidden')
 		h2.classList.add('hidden')
 		h1.classList.add('gradient')
+		h1.style.position = 'sticky'
 	}
 
 	// running retrievePoems here so we have the new retrieved poems from localStorage
@@ -239,6 +244,7 @@ let displayPoems = (clearInput) => {
 		let openModal = (poemId, lines) => {
 			currentPoemId = poemId
 			modalText.value = lines.join('\n')
+			poemSection.classList.add('hidden')
 			modal.classList.remove('hidden')
 			document.body.style.overflow = 'hidden'
 			// animating it to fade in
@@ -385,10 +391,136 @@ let getRandomPoems = async () => {
 let displayRandomPoem = async () => {
 	// fallback poems shown instantly while api loads
 	let poems = [
-		{ lines: ['I carry your heart with me', 'I carry it in my heart'] },
-		{ lines: ['Do not go gentle into that good night', 'Rage, rage against the dying of the light'] },
-		{ lines: ['Because I could not stop for Death —', 'He kindly stopped for me —'] },
-		{ lines: ['Two roads diverged in a wood, and I —', 'I took the one less traveled by'] }
+		{ lines: [
+			'Not being a poet, and drunk as well,',
+			'leaning into the diner and dawn',
+			'and hearing a juke box mockery of some better',
+			'human sound',
+			'I wanted rhetoric',
+			'but could only howl the rotten truth',
+			'Norman Luboff',
+			'should have his nuts ripped off with a plastic fork.',
+			'Then howled around like a man with the',
+			'final angst,',
+			'not knowing what I wanted there',
+			'Probably the waitress, bend her double',
+			'like a safety pin,',
+			'Deposit the mad seed before they',
+			'tie off my tubes',
+			'',
+			'Suddenly a man with wild eyes rushed',
+			'out from the wooden toilet',
+			'Foam on his face and waving a razor',
+			'like a flag, shouting',
+			'',
+			"We'll take our vengeance now!",
+			'',
+			'We rang for Luboff',
+			'on the pay phone, but there was',
+			'no contact',
+			'',
+			'Get a Lawyer, I said. These swine have gone',
+			'far enough.',
+			'Now is the time to',
+			'lay a writ on them,',
+			'Cease and Desist'
+		] },
+		{ lines: [
+			'This is the end',
+			'Beautiful friend',
+			'This is the end',
+			'My only friend, the end',
+			'',
+			'Of our elaborate plans, the end',
+			'Of everything that stands, the end',
+			'No safety or surprise, the end',
+			"I'll never look into your eyes again",
+			'Can you picture what will be?',
+			'So limitless and free',
+			'Desperately in need',
+			"Of some stranger's hand",
+			'In a desperate land',
+			'',
+			'Lost in a Roman wilderness of pain',
+			'And all the children are insane',
+			'All the children are insane',
+			'Waiting for the summer rain, yeah',
+			'',
+			"There's danger on the edge of town",
+			"Ride the King's Highway, baby",
+			'Weird scenes inside the gold mine',
+			'Ride the highway west, baby',
+			'Ride the snake, ride the snake',
+			'To the lake, the ancient lake, baby',
+			"The snake, he's long, seven miles",
+			'',
+			'Ride the snake',
+			"He's old and his skin is cold",
+			'The west is the best',
+			'The west is the best',
+			'Get here and we\'ll do the rest',
+			'The blue bus is calling us',
+			'The blue bus is calling us',
+			'Driver, where you taking us?'
+		] },
+		{ lines: [
+			"Summertime and the livin's easy",
+			"Bradley's on the microphone with Ras M.G.",
+			'All the people in the dance will agree',
+			"That we're well qualified to represent the LBC",
+			'Me, and me and Louie run to the party',
+			'Dance to the rhythm it gets harder',
+			'',
+			'Me and my girl got this relationship',
+			'I love her so bad, but she treats me like sh',
+			'On lock down like a penitentiary',
+			"She spreads her lovin' all over and when she gets home",
+			"There's none left for me",
+			'',
+			"Summertime and the livin's easy",
+			"Bradley's on the microphone with Ras M.G.",
+			'All the people in the dance will agree',
+			"That we're well qualified to represent the LBC",
+			'Me, and me and Louie run to the party',
+			'Dance to the rhythm it gets harder',
+			'',
+			'Oh take this veil from off my eyes',
+			'My burning sun will someday rise',
+			"What am I gonna be doin' for a while?",
+			'Said I\'m gonna play with myself',
+			"Show them now we've come off the shelf"
+		] },
+		{ lines: [
+			'You could be my silver spring',
+			"Blue green colors flashin'",
+			'I would be your only dream',
+			'Your shining autumn, ocean crashing',
+			'',
+			"And don't say that she's pretty",
+			'And did you say that she love you',
+			"Baby, I don't wanna know",
+			'',
+			"So I'll begin not to love you",
+			'Turn around, see me runnin\'',
+			"I'll say I loved you years ago",
+			'Tell myself you never loved me, no',
+			'',
+			"Don't say that she's pretty",
+			'And did you say that she love you',
+			"Baby, I don't wanna know",
+			'Oh, can you tell me was it worth it',
+			"Baby, I don't wanna know",
+			'',
+			'Time casts a spell on you but you won\'t forget me',
+			'I know I could have loved you but you would not let me',
+			'',
+			'Time casts a spell on you but you won\'t forget me',
+			'I know I could have loved you but you would not let me',
+			'Well, time casts a spell on you but you won\'t forget me',
+			'But I know I could have loved you but you would not let me',
+			'Well, time casts a spell on you but you won\'t forget me',
+			'But I know I could have loved you but you would not let me, go ahead and try'
+		] }
 	]
 
 	// selecting a random poem to show first
