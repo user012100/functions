@@ -97,7 +97,6 @@ h1, h2, p, textarea {
 
 #poems {
 	margin-block-end: calc(var(--padding) * 6);
-	max-width: 200ch;
 }
 
 body::selection {
@@ -117,10 +116,25 @@ body {
 }
 
 /* fade transitions */
-h2,
-.random-poem {
+h2 {
 	opacity: 1;
 	transition: opacity 0.75s ease;
+}
+
+/* random poems container */
+#random-poems-container {
+	opacity: 0;
+	transition: opacity 0.75s ease;
+	margin-block-end: calc(var(--padding) * 6);
+}
+
+#random-poems-container.hidden {
+	display: none;
+}
+
+/* hide extra poems on mobile, only show first */
+#random-poems-container .random-poem:not(:first-child) {
+	display: none;
 }
 
 /* new poem button */
@@ -129,6 +143,7 @@ h2,
 	bottom: 0;
 	display: flex;
 	width: 100%;
+	z-index: 2;
 	align-items: flex-end;
 	padding: var(--padding);
 	background-color: var(--background-color);
@@ -190,16 +205,24 @@ textarea::placeholder {
 }
 
 /* poem sections */
-.poem,
+.poem {
+	padding-inline: var(--padding);
+	padding-block-start: var(--padding);
+	max-height: 40vh;
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 0.75s ease;
+}
+
 .random-poem {
 	padding-inline: var(--padding);
 	padding-block-start: var(--padding);
-	max-height: 70%;
+	max-height: 75vh;
 	overflow: hidden;
 }
 
 section.random-poem {
-	background: linear-gradient(to bottom, var(--text-color) 25%, var(--background-color) 100%);
+	background: linear-gradient(to bottom, var(--text-color) 40%, transparent 100%);
 	/* https://css-tricks.com/snippets/css/gradient-text/ */
 	/* using this to change the gradient of the random poem without having to do it in js */
 	-webkit-background-clip: text;
@@ -299,26 +322,61 @@ section.random-poem {
 	.poem {
 		width: 50%;
 	}
-}
 
-@media (width > 1200px) {
-	#poems {
+	#random-poems-container {
 		display: flex;
 		flex-wrap: wrap;
 	}
 
+	#random-poems-container .random-poem {
+		width: 50%;
+		max-width: 60ch;
+	}
+
+	/* showing 2 poems at 800px */
+	#random-poems-container .random-poem:nth-child(1),
+	#random-poems-container .random-poem:nth-child(2) {
+		display: block;
+	}
+}
+
+@media (width > 1200px) {
 	.poem {
 		width: 33%;
+	}
+
+	#random-poems-container .random-poem {
+		width: 33%;
+	}
+
+	/* show 3 poems at 1200px */
+	#random-poems-container .random-poem:nth-child(1),
+	#random-poems-container .random-poem:nth-child(2),
+	#random-poems-container .random-poem:nth-child(3) {
+		display: block;
 	}
 }
 
 @media (width > 1600px) {
-	#poems {
-		display: flex;
-		flex-wrap: wrap;
-	}
-
 	.poem {
 		width: 25%;
+	}
+
+	#random-poems-container .random-poem {
+		width: 25%;
+	}
+
+	/* show all 4 poems at 1600px */
+	#random-poems-container .random-poem:nth-child(1),
+	#random-poems-container .random-poem:nth-child(2),
+	#random-poems-container .random-poem:nth-child(3),
+	#random-poems-container .random-poem:nth-child(4) {
+		display: block;
+	}
+}
+
+@media (width > 2000px) {
+	.poem {
+		width: 20%;
 	}
 }

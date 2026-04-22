@@ -17,7 +17,8 @@ poemText.addEventListener('input', () => {
 	poemText.style.height = '2rem'
 	poemText.style.height = poemText.scrollHeight
 
-	let randomPoem = document.querySelector('.random-poem')
+	// let randomPoem = document.querySelector('.random-poem')
+	let randomPoemsContainer = document.querySelector('#random-poems-container')
 	// checking if the textarea has any text to change color of button
 	if (poemText.value !== '') {
 		// class that allows submission
@@ -39,12 +40,20 @@ poemText.addEventListener('input', () => {
 		}, { once: true })
 
 		// same thing for fading out random poem
-		randomPoem.style.opacity = '0'
-		randomPoem.addEventListener('transitionend', () => {
-			if (randomPoem.style.opacity === '0') {
-				randomPoem.classList.add('hidden')
-			}
-		}, { once: true })
+		// randomPoem.style.opacity = '0'
+		// randomPoem.addEventListener('transitionend', () => {
+		// 	if (randomPoem.style.opacity === '0') {
+		// 		randomPoem.classList.add('hidden')
+		// 	}
+		// }, { once: true })
+		if (randomPoemsContainer) {
+			randomPoemsContainer.style.opacity = '0'
+			randomPoemsContainer.addEventListener('transitionend', () => {
+				if (randomPoemsContainer.style.opacity === '0') {
+					randomPoemsContainer.classList.add('hidden')
+				}
+			}, { once: true })
+		}
 
 	} else {
 		submitButton.classList.remove('allow')
@@ -59,10 +68,16 @@ poemText.addEventListener('input', () => {
 				h2.style.opacity = '1' 
 			})
 
-			randomPoem.classList.remove('hidden')
-			requestAnimationFrame(() => { 
-				randomPoem.style.opacity = '1' 
-			})
+			// randomPoem.classList.remove('hidden')
+			// requestAnimationFrame(() => { 
+			// 	randomPoem.style.opacity = '1' 
+			// })
+			if (randomPoemsContainer) {
+				randomPoemsContainer.classList.remove('hidden')
+				requestAnimationFrame(() => { 
+					randomPoemsContainer.style.opacity = '1' 
+				})
+			}
 		}
 	}
 })
@@ -169,12 +184,20 @@ let displayPoems = (clearInput) => {
 		h2.classList.remove('hidden')
 		h1.classList.remove('gradient')
 		h1.style.position = ''
-		let randomPoem = document.querySelector('.random-poem')
-		if (randomPoem) {
-			randomPoem.classList.remove('hidden')
+		// let randomPoem = document.querySelector('.random-poem')
+		let randomPoemsContainer = document.querySelector('#random-poems-container')
+		// if (randomPoem) {
+		// 	randomPoem.classList.remove('hidden')
+		// 	requestAnimationFrame(() => {
+		// 		h2.style.opacity = '1'
+		// 		randomPoem.style.opacity = '1'
+		// 	})
+		// }
+		if (randomPoemsContainer) {
+			randomPoemsContainer.classList.remove('hidden')
 			requestAnimationFrame(() => {
 				h2.style.opacity = '1'
-				randomPoem.style.opacity = '1'
+				randomPoemsContainer.style.opacity = '1'
 			})
 		}
 	}
@@ -195,7 +218,7 @@ let displayPoems = (clearInput) => {
 	poems.sort((a, b) => b.id - a.id)
 	
 	// creating an element for each poem
-	poems.forEach((poem) => {
+	poems.forEach((poem, index) => {
 		let poemElement = document.createElement('section')
 		poemElement.classList.add('poem')
 		// console.log(poem.text)
@@ -220,8 +243,14 @@ let displayPoems = (clearInput) => {
 
 		poemElement.appendChild(preview)
 		poemSection.appendChild(poemElement)
-		// console.log(poemElement)
-		// console.log(poemElement)
+		// only animate the first poem (newest) when submitting
+		if (clearInput === true && index === 0) {
+			requestAnimationFrame(() => {
+				poemElement.style.opacity = '1'
+			})
+		} else {
+			poemElement.style.opacity = '1'
+		}
 
 		let expanded = document.createElement('textarea')
 		expanded.classList.add('expanded')
@@ -524,55 +553,109 @@ let displayRandomPoem = async () => {
 	]
 
 	// selecting a random poem to show first
-	let currentIndex = Math.floor(Math.random() * poems.length)
+	// let currentIndex = Math.floor(Math.random() * poems.length)
 
 	// creating element
-	let randomPoemElement = document.createElement('section')
-	randomPoemElement.classList.add('random-poem')
+	// let randomPoemElement = document.createElement('section')
+	// randomPoemElement.classList.add('random-poem')
 
 	// filling the element with the poem's lines
-	let showPoem = (poem) => {
-		randomPoemElement.innerHTML = ''
-		poem.lines.forEach((line) => {
-			let lineElement = document.createElement('p')
-			lineElement.textContent = line
-			randomPoemElement.appendChild(lineElement)
-		})
-	}
+	// let showPoem = (poem) => {
+	// 	randomPoemElement.innerHTML = ''
+	// 	poem.lines.forEach((line) => {
+	// 		let lineElement = document.createElement('p')
+	// 		lineElement.textContent = line
+	// 		randomPoemElement.appendChild(lineElement)
+	// 	})
+	// }
 
 	// show the first poem
-	showPoem(poems[currentIndex])
-	document.body.appendChild(randomPoemElement)
+	// showPoem(poems[currentIndex])
+	// document.body.appendChild(randomPoemElement)
 
 	// adding and remove hidden class if we have poems in localStorage
 	// updated to fade as well
-	if (localStorage.length == 0) {
-		randomPoemElement.style.opacity = '0'
-		randomPoemElement.classList.remove('hidden')
-		requestAnimationFrame(() => { 
-			randomPoemElement.style.opacity = '1' 
-		})
-	} else {
-		randomPoemElement.classList.add('hidden')
-	}
+	// if (localStorage.length == 0) {
+	// 	randomPoemElement.style.opacity = '0'
+	// 	randomPoemElement.classList.remove('hidden')
+	// 	requestAnimationFrame(() => { 
+	// 		randomPoemElement.style.opacity = '1' 
+	// 	})
+	// } else {
+	// 	randomPoemElement.classList.add('hidden')
+	// }
 
 	// rotate to next poem
-	setInterval(() => {
-		// only rotate if element is visible
-		if (randomPoemElement.classList.contains('hidden')) { 
-			return 
-		}
-		// fade out
-		randomPoemElement.style.opacity = '0'
-		randomPoemElement.addEventListener('transitionend', () => {
-			// move to next poem
-			currentIndex = (currentIndex + 1) % poems.length
-			showPoem(poems[currentIndex])
-			// fade in
-			requestAnimationFrame(() => { 
-				randomPoemElement.style.opacity = '1' 
+	// setInterval(() => {
+	// 	// only rotate if element is visible
+	// 	if (randomPoemElement.classList.contains('hidden')) { 
+	// 		return 
+	// 	}
+	// 	// fade out
+	// 	randomPoemElement.style.opacity = '0'
+	// 	randomPoemElement.addEventListener('transitionend', () => {
+	// 		// move to next poem
+	// 		currentIndex = (currentIndex + 1) % poems.length
+	// 		showPoem(poems[currentIndex])
+	// 		// fade in
+	// 		requestAnimationFrame(() => { 
+	// 			randomPoemElement.style.opacity = '1' 
+	// 		})
+	// 		// this again to prevent overlap
+	// 	}, { once: true })
+	// }, 5000)
+
+	// creating container instead to show 4 poems at once
+	let currentIndex = 0
+	let container = document.createElement('section')
+	container.id = 'random-poems-container'
+
+	let poemElements = []
+	// this loop is easier for me than forEach tbh
+	for (let i = 0; i < 4; i++) {
+		let element = document.createElement('section')
+		element.classList.add('random-poem')
+		container.appendChild(element)
+		poemElements.push(element)
+	}
+
+	// fill each element with a different poem from the array
+	let showPoems = (startIndex) => {
+		poemElements.forEach((el, i) => {
+			let poem = poems[(startIndex + i) % poems.length]
+			el.innerHTML = ''
+			poem.lines.forEach((line) => {
+				let lineElement = document.createElement('p')
+				lineElement.textContent = line
+				el.appendChild(lineElement)
 			})
-			// this again to prevent overlap
+		})
+	}
+
+	// set opacity to 0 before adding to dom to prevent flash
+	container.style.opacity = '0'
+	showPoems(currentIndex)
+	document.body.appendChild(container)
+
+	// show or hide based on localStorage
+	if (localStorage.length == 0) {
+		requestAnimationFrame(() => { 
+			container.style.opacity = '1' 
+		})
+	} else {
+		container.classList.add('hidden')
+	}
+
+	// rotate all poems at the same time
+	setInterval(() => {
+		if (container.classList.contains('hidden')) { return }
+		container.style.opacity = '0'
+		container.addEventListener('transitionend', () => {
+			currentIndex = (currentIndex + 1) % poems.length
+			showPoems(currentIndex)
+			requestAnimationFrame(() => { 
+				container.style.opacity = '1' 
+			})
 		}, { once: true })
 	}, 5000)
 
